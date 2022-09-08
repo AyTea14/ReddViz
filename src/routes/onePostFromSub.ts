@@ -1,0 +1,38 @@
+import { randomInt } from "crypto";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { getPostsFromCache } from "#lib/redis/redisHandler";
+import { removeNonImagePosts } from "#functions";
+import { writePostsToCache } from "#lib/redis/redisHandler";
+import { HttpStatusCode, Interface, Meme } from "#types";
+import { getPosts } from "#lib/reddit/getPosts";
+
+export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
+    let subreddit = String((req.params as Interface).interface);
+
+    try {
+        let memes: Meme[] = JSON.parse((await getPostsFromCache(subreddit)) as any);
+
+        if (!memes || memes.length === 0) {
+            let { memes: freshMemes, response } = await getPosts(subreddit, 100);
+
+            if (freshMemes === null) {
+                return reply.status(response.code).send(JSON.stringify(response, undefined, 3));
+            }
+
+            freshMemes = removeNonImagePosts(freshMemes);
+            await writePostsToCache(subreddit, freshMemes);
+            memes = freshMemes;
+        }
+
+        if (Array.isArray(memes) && memes.length === 0) {
+            return reply
+                .status(HttpStatusCode.ServiceUnavailable)
+                .send(JSON.stringify({ code: 503, message: "Error while getting Memes" }, undefined, 3));
+        }
+
+        let meme = memes[randomInt(memes.length)];
+        return reply.status(HttpStatusCode.Ok).send(JSON.stringify(meme, undefined, 3));
+    } catch (error: any) {
+        return reply.status(error.code || 503).send(JSON.stringify({ code: error.code || 503, message: error.message }, undefined, 3));
+    }
+}
