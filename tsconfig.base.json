@@ -1,5 +1,5 @@
 {
-    "extends": "@sapphire/ts-config",
+    "compileOnSave": true,
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "alwaysStrict": true,
