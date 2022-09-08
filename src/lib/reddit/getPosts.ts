@@ -22,7 +22,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     const url = getSubredditAPIURL(subreddit, count);
 
     let { body, statusCode } = await makeGetRequest(url, accessToken);
-    console.log(statusCode);
+
     if (statusCode === HttpStatusCode.Unauthorized) {
         accessToken = await getAccessToken();
 
