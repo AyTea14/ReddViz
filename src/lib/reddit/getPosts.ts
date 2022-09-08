@@ -94,19 +94,19 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     let memes: Meme[] = [];
     for (let post of body.data.children) {
         memes.push({
-            id: post.data.id,
-            title: post.data.title,
-            subreddit: post.data.subreddit,
-            author: post.data.author,
-            postLink: new URL(`${post.data.permalink}`, "https://www.reddit.com").toString(),
-            thumbnail: post.data.thumbnail,
-            image: post.data.url,
+            id: decode(post.data.id),
+            title: decode(post.data.title),
+            subreddit: decode(post.data.subreddit),
+            author: decode(post.data.author),
+            postLink: decode(new URL(`${post.data.permalink}`, "https://www.reddit.com").toString()),
+            thumbnail: decode(post.data.thumbnail),
+            image: decode(post.data.url),
             nsfw: post.data.over_18,
             spoiler: post.data.spoiler,
             upvotes: post.data.ups,
             comments: post.data.num_comments,
             createdUtc: post.data.created_utc,
-            upvoteRatio: post.data.created_utc,
+            upvoteRatio: post.data.upvote_ratio,
             preview: getCleanPreviewImage(post),
         });
     }

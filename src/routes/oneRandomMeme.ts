@@ -1,7 +1,7 @@
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
-import { removeNonImagePosts } from "#functions";
+import { formatJSON, removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, Meme } from "#types";
@@ -28,11 +28,11 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
                 .status(HttpStatusCode.ServiceUnavailable)
-                .send(JSON.stringify({ code: 503, message: "Error while getting Memes" }, undefined, 3));
+                .send(formatJSON({ code: 503, message: "Error while getting Memes" }));
         }
 
         let meme = memes[randomInt(memes.length)];
-        return reply.status(HttpStatusCode.Ok).send(JSON.stringify(meme, undefined, 3));
+        return reply.status(HttpStatusCode.Ok).send(formatJSON(meme));
     } catch (error: any) {
         return reply.status(error.code || 503).send(JSON.stringify({ code: error.code || 503, message: error.message }, undefined, 3));
     }
