@@ -17,7 +17,7 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.status(response.code).type("application/json").send(formatJSON(response));
+                return reply.code(response.code).send(formatJSON(response));
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -27,17 +27,13 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
 
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
-                .status(HttpStatusCode.ServiceUnavailable)
-                .type("application/json")
+                .code(HttpStatusCode.ServiceUnavailable)
                 .send(formatJSON({ code: 503, message: "Error while getting Memes" }));
         }
 
         let meme = memes[randomInt(memes.length)];
-        return reply.status(HttpStatusCode.Ok).type("application/json").send(formatJSON(meme));
+        return reply.code(HttpStatusCode.Ok).send(formatJSON(meme));
     } catch (error: any) {
-        return reply
-            .status(error.code || 503)
-            .type("application/json")
-            .send(formatJSON({ code: error.code || 503, message: error.message }));
+        return reply.code(error.code || 503).send(formatJSON({ code: error.code || 503, message: error.message }));
     }
 }
