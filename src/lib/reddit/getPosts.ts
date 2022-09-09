@@ -24,9 +24,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     let { body, statusCode } = await makeGetRequest(url, accessToken);
 
     if (statusCode === HttpStatusCode.Unauthorized) {
-        accessToken = await getAccessToken();
-
-        const req = await makeGetRequest(url, accessToken);
+        const req = await makeGetRequest(url, await getAccessToken());
         body = req.body;
         statusCode = req.statusCode;
     }
@@ -92,21 +90,21 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     }
 
     let memes: Meme[] = [];
-    for (let post of body.data.children) {
+    for (let { data: post } of body.data.children) {
         memes.push({
-            id: decode(post.data.id),
-            title: decode(post.data.title),
-            subreddit: decode(post.data.subreddit),
-            author: decode(post.data.author),
-            postLink: decode(new URL(`${post.data.permalink}`, "https://www.reddit.com").toString()),
-            thumbnail: decode(post.data.thumbnail),
-            image: decode(post.data.url),
-            nsfw: post.data.over_18,
-            spoiler: post.data.spoiler,
-            upvotes: post.data.ups,
-            comments: post.data.num_comments,
-            createdUtc: post.data.created_utc,
-            upvoteRatio: post.data.upvote_ratio,
+            id: decode(post.id),
+            title: decode(post.title),
+            subreddit: decode(post.subreddit),
+            author: decode(post.author),
+            postLink: decode(new URL(`${post.permalink}`, "https://www.reddit.com").toString()),
+            thumbnail: decode(post.thumbnail),
+            image: decode(post.url),
+            nsfw: post.over_18,
+            spoiler: post.spoiler,
+            upvotes: post.ups,
+            comments: post.num_comments,
+            createdUtc: post.created_utc,
+            upvoteRatio: post.upvote_ratio,
             preview: getCleanPreviewImage(post),
         });
     }
@@ -114,9 +112,9 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     return { memes, response: { code: HttpStatusCode.Ok, message: "OK" } };
 }
 
-function getCleanPreviewImage(post: Reddit.Child): string[] {
+function getCleanPreviewImage(post: Reddit.PostDataElement): string[] {
     let links: string[] = [];
-    const preview = post.data.preview;
+    const preview = post.preview;
 
     if (post && preview) {
         if (preview && preview.images.length) {
@@ -128,9 +126,9 @@ function getCleanPreviewImage(post: Reddit.Child): string[] {
                 links.push(decode(images[0].source.url));
             } else if (images.length !== 0 && images[0].resolutions.length === 0 && images[0].source) {
                 links.push(decode(images[0].source.url));
-            } else links.push(decode(post.data.url));
+            } else links.push(decode(post.url));
         }
-    } else links.push(post.data.url);
+    } else links.push(post.url);
 
     return links;
 }

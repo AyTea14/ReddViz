@@ -3,11 +3,11 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
 import { formatJSON, removeNonImagePosts } from "#functions";
 import { writePostsToCache } from "#lib/redis/redisHandler";
-import { HttpStatusCode, Interface, Meme } from "#types";
+import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
 
 export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
-    let subreddit = String((req.params as Interface).interface);
+    let subreddit = String((req.params as InterfaceParams).interface);
 
     try {
         let memes: Meme[] = JSON.parse((await getPostsFromCache(subreddit)) as any);

@@ -4,12 +4,12 @@ import { getPostsFromCache } from "#lib/redis/redisHandler";
 import { formatJSON, getNRandomMemes, removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
-import { HttpStatusCode, Interface, Meme } from "#types";
+import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
 
 export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = subreddits[randomInt(subreddits.length)];
-    let count = Number((req.params as Interface).interface);
+    let count = Number((req.params as InterfaceParams).interface);
     if (count <= 0) return reply.status(400).send(formatJSON({ code: 400, message: "Invalid Count Value" }));
     if (count > 50) count = 50;
 

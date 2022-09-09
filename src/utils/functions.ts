@@ -1,3 +1,4 @@
+import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { Meme } from "../types";
 
 export function removeNonImagePosts(memes: Meme[] | null) {
@@ -41,4 +42,11 @@ export function getNRandomMemes<T>(arr: Array<T>, picks: number): Array<T> {
 
 export function formatJSON(object: any, indent: number = 3) {
     return JSON.stringify(object, undefined, indent);
+}
+
+export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {
+    if (req.url.slice(-1) == "/" && req.url.length > 1) {
+        let query = req.url.slice(req.url.length);
+        reply.redirect(301, req.url.slice(0, -1) + query);
+    } else done();
 }

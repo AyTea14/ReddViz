@@ -1,6 +1,8 @@
 import "dotenv/config";
 import fastify from "fastify";
+import expressPlugin from "@fastify/express";
 import { routes } from "./routes/index.js";
+import { removeTrailingSlash } from "#functions";
 import { morganMiddleware } from "#utils";
 
 async function build() {
@@ -8,7 +10,9 @@ async function build() {
         ignoreTrailingSlash: true,
         trustProxy: true,
     });
-    await server.register(import("@fastify/express"));
+
+    await server.register(expressPlugin);
+    server.addHook("preHandler", removeTrailingSlash);
 
     server.use(morganMiddleware);
     return server;
