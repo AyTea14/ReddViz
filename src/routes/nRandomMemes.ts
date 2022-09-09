@@ -10,7 +10,11 @@ import { getPosts } from "#lib/reddit/getPosts";
 export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = subreddits[randomInt(subreddits.length)];
     let count = Number((req.params as InterfaceParams).interface);
-    if (count <= 0) return reply.status(400).send(formatJSON({ code: 400, message: "Invalid Count Value" }));
+    if (count <= 0)
+        return reply
+            .status(400)
+            .type("application/json")
+            .send(formatJSON({ code: 400, message: "Invalid Count Value" }));
     if (count > 50) count = 50;
 
     try {
@@ -20,7 +24,7 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.status(response.code).send(formatJSON(response));
+                return reply.status(response.code).type("application/json").send(formatJSON(response));
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -31,16 +35,21 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
                 .status(HttpStatusCode.InternalServerError)
+                .type("application/json")
                 .send(formatJSON({ code: HttpStatusCode.InternalServerError, message: "Error while getting Memes" }));
         }
 
         if (memes.length < count) count = memes.length;
         memes = getNRandomMemes(memes, count);
 
-        return reply.status(HttpStatusCode.Ok).send(formatJSON({ count: memes.length, memes }));
+        return reply
+            .status(HttpStatusCode.Ok)
+            .type("application/json")
+            .send(formatJSON({ count: memes.length, memes }));
     } catch (error: any) {
         return reply
             .status(error.code || HttpStatusCode.ServiceUnavailable)
+            .type("application/json")
             .send(formatJSON({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message }));
     }
 }

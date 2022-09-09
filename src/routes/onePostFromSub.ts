@@ -16,7 +16,7 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.status(response.code).send(formatJSON(response));
+                return reply.status(response.code).type("application/json").send(formatJSON(response));
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -27,14 +27,16 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
                 .status(HttpStatusCode.BadRequest)
+                .type("application/json")
                 .send(formatJSON({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` }));
         }
 
         let meme = memes[randomInt(memes.length)];
-        return reply.status(HttpStatusCode.Ok).send(formatJSON(meme));
+        return reply.status(HttpStatusCode.Ok).type("application/json").send(formatJSON(meme));
     } catch (error: any) {
         return reply
             .status(error.code || HttpStatusCode.ServiceUnavailable)
+            .type("application/json")
             .send(formatJSON({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message }));
     }
 }
