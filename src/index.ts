@@ -1,8 +1,8 @@
 import "dotenv/config";
 import fastify from "fastify";
 import expressPlugin from "@fastify/express";
-import { gibmeRoutes, homePage } from "./routes/index.js";
-import { removeTrailingSlash } from "#functions";
+import { gimmeRoutes, homePage } from "./routes/index.js";
+import { formatJSON, removeTrailingSlash } from "#functions";
 import { morganMiddleware } from "#utils";
 
 async function build() {
@@ -11,7 +11,7 @@ async function build() {
         trustProxy: true,
     });
 
-    await server.register(gibmeRoutes, { prefix: "gimme" });
+    await server.register(gimmeRoutes, { prefix: "gimme" });
     await server.register(expressPlugin);
     server.addHook("preHandler", removeTrailingSlash);
 
@@ -22,6 +22,7 @@ async function build() {
 const PORT = parseInt(process.env.PORT as string) || 3000;
 build()
     .then((server) => {
+        server.decorateReply("json", formatJSON);
         server.get("/", homePage);
         server.listen({ port: PORT, host: "0.0.0.0" }, (_err, address) => {
             console.log(`application listening at ${address}`);

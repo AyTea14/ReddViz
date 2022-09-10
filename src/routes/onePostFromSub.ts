@@ -1,7 +1,7 @@
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
-import { formatJSON, removeNonImagePosts } from "#functions";
+import { removeNonImagePosts } from "#functions";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
@@ -16,7 +16,7 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.code(response.code).send(formatJSON(response));
+                return reply.code(response.code).json(response);
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -27,14 +27,14 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
                 .code(HttpStatusCode.BadRequest)
-                .send(formatJSON({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` }));
+                .json({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` });
         }
 
         let meme = memes[randomInt(memes.length)];
-        return reply.code(HttpStatusCode.Ok).send(formatJSON(meme));
+        return reply.code(HttpStatusCode.Ok).json(meme);
     } catch (error: any) {
         return reply
             .code(error.code || HttpStatusCode.ServiceUnavailable)
-            .send(formatJSON({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message }));
+            .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });
     }
 }

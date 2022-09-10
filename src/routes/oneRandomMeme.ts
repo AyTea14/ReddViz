@@ -1,7 +1,7 @@
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
-import { formatJSON, removeNonImagePosts } from "#functions";
+import { removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, Meme } from "#types";
@@ -17,7 +17,7 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.code(response.code).send(formatJSON(response));
+                return reply.code(response.code).json(response);
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -26,14 +26,12 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
         }
 
         if (Array.isArray(memes) && memes.length === 0) {
-            return reply
-                .code(HttpStatusCode.ServiceUnavailable)
-                .send(formatJSON({ code: 503, message: "Error while getting Memes" }));
+            return reply.code(HttpStatusCode.ServiceUnavailable).json({ code: 503, message: "Error while getting Memes" });
         }
 
         let meme = memes[randomInt(memes.length)];
-        return reply.code(HttpStatusCode.Ok).send(formatJSON(meme));
+        return reply.code(HttpStatusCode.Ok).json(meme);
     } catch (error: any) {
-        return reply.code(error.code || 503).send(formatJSON({ code: error.code || 503, message: error.message }));
+        return reply.code(error.code || 503).json({ code: error.code || 503, message: error.message });
     }
 }

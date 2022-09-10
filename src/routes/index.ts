@@ -4,7 +4,7 @@ import { nRandomPostsFromSub } from "./nRandomPostsFromSub.js";
 import { oneRandomMeme } from "./oneRandomMeme.js";
 import { subredditOrCount } from "./subredditOrCount.js";
 
-export async function gibmeRoutes(fastify: FastifyInstance, _: RegisterOptions): Promise<void> {
+export async function gimmeRoutes(fastify: FastifyInstance, _: RegisterOptions): Promise<void> {
     fastify
         .addHook("preHandler", (_, reply, done) => {
             reply.type("application/json");

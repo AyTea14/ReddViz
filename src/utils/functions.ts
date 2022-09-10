@@ -40,8 +40,8 @@ export function getNRandomMemes<T>(arr: Array<T>, picks: number): Array<T> {
     return [arr[Math.floor(rng() * arr.length)]];
 }
 
-export function formatJSON(object: any, indent: number = 3) {
-    return JSON.stringify(object, undefined, indent);
+export function formatJSON(payload: unknown, indent: number = 3) {
+    return JSON.stringify(payload, undefined, indent);
 }
 
 export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {

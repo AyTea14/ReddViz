@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
-import { formatJSON, getNRandomMemes, removeNonImagePosts } from "#functions";
+import { getNRandomMemes, removeNonImagePosts } from "#functions";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
@@ -8,7 +8,7 @@ import { getPosts } from "#lib/reddit/getPosts";
 export async function nRandomPostsFromSub(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = String((req.params as InterfaceParams).interface);
     let count = Number((req.params as InterfaceParams).count);
-    if (count <= 0) return reply.code(400).send(formatJSON({ code: 400, message: "Invalid Count Value" }));
+    if (count <= 0) return reply.code(400).json({ code: 400, message: "Invalid Count Value" });
     if (count > 50) count = 50;
 
     try {
@@ -18,7 +18,7 @@ export async function nRandomPostsFromSub(req: FastifyRequest, reply: FastifyRep
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
 
             if (freshMemes === null) {
-                return reply.code(response.code).send(formatJSON(response));
+                return reply.code(response.code).json(response);
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
@@ -29,16 +29,16 @@ export async function nRandomPostsFromSub(req: FastifyRequest, reply: FastifyRep
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
                 .code(HttpStatusCode.BadRequest)
-                .send(formatJSON({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` }));
+                .json({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` });
         }
 
         if (memes.length < count) count = memes.length;
         memes = getNRandomMemes(memes, count);
 
-        return reply.code(HttpStatusCode.Ok).send(formatJSON({ count: memes.length, memes }));
+        return reply.code(HttpStatusCode.Ok).json({ count: memes.length, memes });
     } catch (error: any) {
         return reply
             .code(error.code || HttpStatusCode.ServiceUnavailable)
-            .send(formatJSON({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message }));
+            .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });
     }
 }
