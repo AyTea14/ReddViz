@@ -6,7 +6,12 @@ export function encodeCredentials(): string {
     return Buffer.from(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`).toString("base64");
 }
 
-export async function makeGetRequest(url: string, accessToken: string): Promise<{ body: Reddit.Response | null; statusCode: number }> {
+interface GetRequestData {
+    body: Reddit.Response | null;
+    statusCode: number;
+}
+
+export async function makeGetRequest(url: string, accessToken: string): Promise<GetRequestData> {
     const data = await request(url)
         .auth(accessToken, "Bearer")
         .options("throwOnError", true)
