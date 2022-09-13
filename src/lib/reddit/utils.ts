@@ -1,6 +1,6 @@
 import request from "@aytea/request";
 import { randomInt } from "crypto";
-import { Reddit } from "../../types";
+import { HttpStatusCode, Reddit } from "#types";
 
 export function encodeCredentials(): string {
     return Buffer.from(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`).toString("base64");
@@ -24,7 +24,7 @@ export async function makeGetRequest(url: string, accessToken: string): Promise<
             return { body: (await data.body.json()) as Reddit.Response, statusCode: data.statusCode };
         })
         .catch((err) => {
-            return { body: null, statusCode: err.statusCode };
+            return { body: null, statusCode: err.statusCode || HttpStatusCode.InternalServerError };
         });
 
     return data;

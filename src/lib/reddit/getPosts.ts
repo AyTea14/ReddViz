@@ -2,6 +2,7 @@ import { decode } from "html-entities";
 import { HttpStatusCode, Reddit, Meme } from "#types";
 import { getAccessToken } from "./oAuth.js";
 import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
+import Sentry from "@sentry/node";
 
 interface CustomRedditError {
     code: HttpStatusCode;
@@ -30,6 +31,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     }
 
     if (statusCode === HttpStatusCode.InternalServerError) {
+        Sentry.captureMessage("Reddit is down!");
         return {
             memes: null,
             response: {
@@ -60,6 +62,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     }
 
     if (statusCode !== HttpStatusCode.Ok) {
+        Sentry.captureMessage(String(body));
         return {
             memes: null,
             response: {
@@ -120,13 +123,11 @@ function getCleanPreviewImage(post: Reddit.PostDataElement): string[] {
         if (preview && preview.images.length) {
             let images = preview.images;
             if (images.length !== 0 && images[0].resolutions.length !== 0) {
-                for (let image of images[0].resolutions) {
-                    links.push(decode(image.url));
-                }
+                for (let image of images[0].resolutions) links.push(decode(image.url));
                 links.push(decode(images[0].source.url));
-            } else if (images.length !== 0 && images[0].resolutions.length === 0 && images[0].source) {
+            } else if (images.length !== 0 && images[0].resolutions.length === 0 && images[0].source)
                 links.push(decode(images[0].source.url));
-            } else links.push(decode(post.url));
+            else links.push(decode(post.url));
         }
     } else links.push(post.url);
 

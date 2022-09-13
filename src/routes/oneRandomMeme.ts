@@ -6,6 +6,7 @@ import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
+import Sentry from "@sentry/node";
 
 export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
     let subreddit = subreddits[randomInt(subreddits.length)];
@@ -21,7 +22,7 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
-            await writePostsToCache(subreddit, freshMemes);
+            await writePostsToCache(subreddit, freshMemes).catch(Sentry.captureException);
             memes = freshMemes;
         }
 
@@ -32,6 +33,7 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
         let meme = memes[randomInt(memes.length)];
         return reply.code(HttpStatusCode.Ok).json(meme);
     } catch (error: any) {
+        Sentry.captureException(error);
         return reply.code(error.code || 503).json({ code: error.code || 503, message: error.message });
     }
 }

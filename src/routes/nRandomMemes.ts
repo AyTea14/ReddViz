@@ -1,11 +1,12 @@
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
-import { formatJSON, getNRandomMemes, removeNonImagePosts } from "#functions";
+import { getNRandomMemes, removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
+import Sentry from "@sentry/node";
 
 export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = subreddits[randomInt(subreddits.length)];
@@ -24,7 +25,7 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
-            await writePostsToCache(subreddit, freshMemes);
+            await writePostsToCache(subreddit, freshMemes).catch(Sentry.captureException);
             memes = freshMemes;
         }
 
@@ -39,6 +40,7 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
 
         return reply.code(HttpStatusCode.Ok).json({ count: memes.length, memes });
     } catch (error: any) {
+        Sentry.captureException(error);
         return reply
             .code(error.code || HttpStatusCode.ServiceUnavailable)
             .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });

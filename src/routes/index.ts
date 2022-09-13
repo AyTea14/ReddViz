@@ -3,6 +3,14 @@ import { FastifyInstance, RegisterOptions, FastifyReply, FastifyRequest } from "
 import { nRandomPostsFromSub } from "./nRandomPostsFromSub.js";
 import { oneRandomMeme } from "./oneRandomMeme.js";
 import { subredditOrCount } from "./subredditOrCount.js";
+import { RewriteFrames } from "@sentry/integrations";
+import * as Sentry from "@sentry/node";
+
+Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    integrations: [new RewriteFrames({ root: global.__dirname })],
+});
 
 export async function gimmeRoutes(fastify: FastifyInstance, _: RegisterOptions): Promise<void> {
     fastify

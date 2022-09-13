@@ -5,6 +5,7 @@ import { removeNonImagePosts } from "#functions";
 import { writePostsToCache } from "#lib/redis/redisHandler";
 import { HttpStatusCode, InterfaceParams, Meme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
+import Sentry from "@sentry/node";
 
 export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = String((req.params as InterfaceParams).interface);
@@ -20,7 +21,7 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
             }
 
             freshMemes = removeNonImagePosts(freshMemes);
-            await writePostsToCache(subreddit, freshMemes);
+            await writePostsToCache(subreddit, freshMemes).catch(Sentry.captureException);
             memes = freshMemes;
         }
 
@@ -33,6 +34,7 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
         let meme = memes[randomInt(memes.length)];
         return reply.code(HttpStatusCode.Ok).json(meme);
     } catch (error: any) {
+        Sentry.captureException(error);
         return reply
             .code(error.code || HttpStatusCode.ServiceUnavailable)
             .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });

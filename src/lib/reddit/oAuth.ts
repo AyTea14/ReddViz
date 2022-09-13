@@ -1,6 +1,7 @@
 import request from "@aytea/request";
 import { AccessTokenBody } from "#types";
 import { encodeCredentials } from "./utils.js";
+import Sentry from "@sentry/node";
 
 export async function getAccessToken(): Promise<string> {
     const encodedCredentials = encodeCredentials();
@@ -17,6 +18,7 @@ export async function getAccessToken(): Promise<string> {
             return data.access_token;
         })
         .catch((err) => {
+            Sentry.captureException(err);
             console.log(`Error while trying to get access token: ` + err);
             return "";
         });
