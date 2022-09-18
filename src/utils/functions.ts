@@ -45,8 +45,9 @@ export function formatJSON(payload: unknown, indent: number = 3) {
 }
 
 export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {
-    if (req.url.slice(-1) == "/" && req.url.length > 1) {
-        let query = req.url.slice(req.url.length);
-        reply.redirect(301, req.url.slice(0, -1) + query);
+    const url = new URL(`${req.url}`, `${req.protocol}://${req.hostname}`);
+    if (url.pathname.slice(-1) === "/" && url.pathname.length > 1) {
+        let path = url.pathname.slice(0, -1) + url.search;
+        reply.redirect(301, path);
     } else done();
 }

@@ -2,10 +2,12 @@ import "dotenv/config";
 import fastify from "fastify";
 import expressPlugin from "@fastify/express";
 import { gimmeRoutes, homePage } from "./routes/index.js";
-import { formatJSON, removeTrailingSlash } from "#functions";
+import { removeTrailingSlash } from "#functions";
 import { morganMiddleware } from "#utils";
 
-async function build() {
+const PORT = parseInt(process.env.PORT as string) || 3000;
+
+(async () => {
     const server = fastify({
         ignoreTrailingSlash: true,
         trustProxy: true,
@@ -16,16 +18,9 @@ async function build() {
     server.addHook("preHandler", removeTrailingSlash);
 
     server.use(morganMiddleware);
-    return server;
-}
-
-const PORT = parseInt(process.env.PORT as string) || 3000;
-build()
-    .then((server) => {
-        server.decorateReply("json", formatJSON);
-        server.get("/", homePage);
-        server.listen({ port: PORT, host: "0.0.0.0" }, (_err, address) => {
-            console.log(`application listening at ${address}`);
-        });
-    })
-    .catch(console.log);
+    // server.decorateReply("json", formatJSON);
+    server.get("/", homePage);
+    server.listen({ port: PORT, host: "0.0.0.0" }, (_err, address) => {
+        console.log(`application listening at ${address}`);
+    });
+})();

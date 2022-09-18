@@ -1,10 +1,10 @@
-// import { NextFunction, Request, Response } from "express";
-import { FastifyInstance, RegisterOptions, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { nRandomPostsFromSub } from "./nRandomPostsFromSub.js";
 import { oneRandomMeme } from "./oneRandomMeme.js";
 import { subredditOrCount } from "./subredditOrCount.js";
 import { RewriteFrames } from "@sentry/integrations";
 import * as Sentry from "@sentry/node";
+import { formatJSON } from "#functions";
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -12,7 +12,9 @@ Sentry.init({
     integrations: [new RewriteFrames({ root: global.__dirname })],
 });
 
-export async function gimmeRoutes(fastify: FastifyInstance, _: RegisterOptions): Promise<void> {
+export async function gimmeRoutes(fastify: FastifyInstance): Promise<void> {
+    if (!fastify.hasReplyDecorator("json")) fastify.decorateReply("json", formatJSON);
+
     fastify
         .addHook("preHandler", (_, reply, done) => {
             reply.type("application/json");

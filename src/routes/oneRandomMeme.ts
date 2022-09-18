@@ -4,12 +4,13 @@ import { getPostsFromCache } from "#lib/redis/redisHandler";
 import { removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
-import { HttpStatusCode, Meme } from "#types";
+import { HttpStatusCode, Meme, NoNSFWMeme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
 import Sentry from "@sentry/node";
 
-export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
+export async function oneRandomMeme(req: FastifyRequest, reply: FastifyReply) {
     let subreddit = subreddits[randomInt(subreddits.length)];
+    let filterNSFW = (req.query as NoNSFWMeme).nonsfw === "true" ? true : false;
 
     try {
         let memes: Meme[] = JSON.parse((await getPostsFromCache(subreddit)) as any);
@@ -25,6 +26,7 @@ export async function oneRandomMeme(_req: FastifyRequest, reply: FastifyReply) {
             await writePostsToCache(subreddit, freshMemes).catch(Sentry.captureException);
             memes = freshMemes;
         }
+        memes = Array.from(memes).filter((x) => (filterNSFW ? x.nsfw === false : x.nsfw === true || x.nsfw === false));
 
         if (Array.isArray(memes) && memes.length === 0) {
             return reply.code(HttpStatusCode.ServiceUnavailable).json({ code: 503, message: "Error while getting Memes" });
