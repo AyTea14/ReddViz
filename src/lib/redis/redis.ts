@@ -1,3 +1,4 @@
+import { logger } from "#root/index";
 import redis, { type Redis } from "ioredis";
 import { Config } from "../../types";
 
@@ -15,7 +16,7 @@ export default class {
         this.config = config;
         this.url = config.url || "";
         this.client = new redis(this.url || this.config);
-        this.client.connect(() => console.log("connected to redis database"));
+        this.client.connect(() => logger.info("connected to redis database"));
     }
 
     async set(key: string, data: any, callback: (setSuccessful: boolean) => void) {

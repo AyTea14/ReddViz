@@ -4,7 +4,9 @@ import { oneRandomMeme } from "./oneRandomMeme.js";
 import { subredditOrCount } from "./subredditOrCount.js";
 import { RewriteFrames } from "@sentry/integrations";
 import * as Sentry from "@sentry/node";
-import { formatJSON } from "#functions";
+import { coloredMethod, coloredStatusCode, formatJSON } from "#functions";
+import { logger } from "#root/index";
+import prettyMs from "pretty-ms";
 
 Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -16,6 +18,14 @@ export async function gimmeRoutes(fastify: FastifyInstance): Promise<void> {
     if (!fastify.hasReplyDecorator("json")) fastify.decorateReply("json", formatJSON);
 
     fastify
+        .addHook("onResponse", (req, reply, done) => {
+            let latency = prettyMs(reply.getResponseTime(), { secondsDecimalDigits: 7, millisecondsDecimalDigits: 4 }).padStart(13);
+            let clientIp = String(req.ip).padStart(15);
+            let statusCode = coloredStatusCode(reply.statusCode);
+            let method = coloredMethod(req.method);
+            logger.info(`${statusCode} | ${latency} | ${clientIp} | ${method} "${req.url}"`);
+            done();
+        })
         .addHook("preHandler", (_, reply, done) => {
             reply.type("application/json");
             done();

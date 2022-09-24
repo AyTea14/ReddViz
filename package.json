@@ -26,6 +26,7 @@
     "@fastify/express": "^2.0.2",
     "@sentry/integrations": "^7.12.1",
     "@sentry/node": "^7.12.1",
+    "@skyra/logger": "^1.0.1",
     "colorette": "^2.0.19",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",

@@ -1,3 +1,4 @@
+import { bgBlue, bgCyan, bgGreen, bgMagenta, bgRed, bgWhite, bgYellow, black, whiteBright } from "colorette";
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { Meme } from "../types";
 
@@ -51,3 +52,32 @@ export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, do
         reply.redirect(301, path);
     } else done();
 }
+
+export const coloredMethod = (method: string): string => {
+    let methods = ` ${method.padEnd(7)} `;
+    switch (method) {
+        case "GET":
+            return bgBlue(whiteBright(`${methods}`));
+        case "POST":
+            return bgCyan(whiteBright(`${methods}`));
+        case "PUT":
+            return bgYellow(black(`${methods}`));
+        case "DELETE":
+            return bgRed(whiteBright(`${methods}`));
+        case "PATCH":
+            return bgGreen(whiteBright(`${methods}`));
+        case "HEAD":
+            return bgMagenta(whiteBright(`${methods}`));
+        case "OPTIONS":
+            return bgWhite(black(`${methods}`));
+        default:
+            return method;
+    }
+};
+export const coloredStatusCode = (statusCode: number | string): string => {
+    let statusCodes = ` ${String(statusCode).padStart(3)} `;
+    if (statusCode >= 200 && statusCode < 300) return bgGreen(whiteBright(`${statusCodes}`));
+    else if (statusCode >= 300 && statusCode < 400) return bgWhite(black(`${statusCodes}`));
+    else if (statusCode >= 400 && statusCode < 500) return bgYellow(black(`${statusCodes}`));
+    else return bgRed(whiteBright(`${statusCodes}`));
+};

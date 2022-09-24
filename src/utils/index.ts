@@ -1,3 +1,3 @@
 export * from "./config.js";
 export * from "./subreddits.js";
-export * from "./morgan.js";
+export * from "./logger.js";

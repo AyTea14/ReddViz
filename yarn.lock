@@ -125,6 +125,13 @@
     "@sentry/types" "7.12.1"
     tslib "^1.9.3"
 
+"@skyra/logger@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@skyra/logger/-/logger-1.0.1.tgz#7e4b3a0dd1def01eb8fb7f46bf1f8e1050f5d209"
+  integrity sha512-3wJKyWnuxukLQbmYkOqq73+l3f0vwqz0MDyXJ0GjnIacVy+mQJYzxX4a9gaoGAsavz6YbgVKZ5QbbMZW+n1Pyg==
+  dependencies:
+    colorette "2.0.19"
+
 "@swc/core-android-arm-eabi@1.2.248":
   version "1.2.248"
   resolved "https://registry.yarnpkg.com/@swc/core-android-arm-eabi/-/core-android-arm-eabi-1.2.248.tgz#dfc9ffe76b56130ea0ba44359a129e99b7dae8d7"
@@ -495,7 +502,7 @@ cluster-key-slot@^1.1.0:
   resolved "https://registry.yarnpkg.com/cluster-key-slot/-/cluster-key-slot-1.1.0.tgz#30474b2a981fb12172695833052bc0d01336d10d"
   integrity sha512-2Nii8p3RwAPiFwsnZvukotvow2rIHM+yQ6ZcBXGHdniadkYGZYiGmkHJIbZPIV9nfv7m/U1IPMVVcAhoWFeklw==
 
-colorette@^2.0.19, colorette@^2.0.7:
+colorette@2.0.19, colorette@^2.0.19, colorette@^2.0.7:
   version "2.0.19"
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-2.0.19.tgz#cdf044f47ad41a0f4b56b3a0d5b4e6e1a2d5a798"
   integrity sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==
