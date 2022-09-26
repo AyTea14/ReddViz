@@ -8,8 +8,8 @@ export async function getAccessToken(): Promise<string> {
 
     const accessToken = await request("https://www.reddit.com/api/v1/access_token")
         .body(new URLSearchParams({ grant_type: "client_credentials" }))
-        .header("user-agent", process.env.USER_AGENT ?? "MemeApi/0.0.1")
-        .header("content-type", "application/x-www-form-urlencoded")
+        .headers("user-agent", process.env.USER_AGENT ?? "MemeApi/0.0.1")
+        .headers("content-type", "application/x-www-form-urlencoded")
         .auth(encodedCredentials, "Basic")
         .options("throwOnError", true)
         .post()

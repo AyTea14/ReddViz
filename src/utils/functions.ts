@@ -1,6 +1,8 @@
 import { bgBlue, bgCyan, bgGreen, bgMagenta, bgRed, bgWhite, bgYellow, black, whiteBright } from "colorette";
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
+import { logger } from "#root/index";
 import { Meme } from "../types";
+import prettyMs from "pretty-ms";
 
 export function removeNonImagePosts(memes: Meme[] | null) {
     let onlyImagePosts = [];
@@ -80,4 +82,13 @@ export const coloredStatusCode = (statusCode: number | string): string => {
     else if (statusCode >= 300 && statusCode < 400) return bgWhite(black(`${statusCodes}`));
     else if (statusCode >= 400 && statusCode < 500) return bgYellow(black(`${statusCodes}`));
     else return bgRed(whiteBright(`${statusCodes}`));
+};
+
+export const reqLogger = async (req: FastifyRequest, reply: FastifyReply) => {
+    let latency = prettyMs(reply.getResponseTime(), { secondsDecimalDigits: 7, millisecondsDecimalDigits: 4 }).padStart(13);
+    let clientIp = String(req.ip).padStart(15);
+    let statusCode = coloredStatusCode(reply.statusCode);
+    let method = coloredMethod(req.method);
+    logger.info(`${statusCode} | ${latency} | ${clientIp} | ${method} "${req.url}"`);
+    return;
 };
