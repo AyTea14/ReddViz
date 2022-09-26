@@ -18,17 +18,16 @@ export async function gimmeRoutes(fastify: FastifyInstance): Promise<void> {
     if (!fastify.hasReplyDecorator("json")) fastify.decorateReply("json", formatJSON);
 
     fastify
-        .addHook("onResponse", (req, reply, done) => {
+        .addHook("onResponse", async (req, reply) => {
             let latency = prettyMs(reply.getResponseTime(), { secondsDecimalDigits: 7, millisecondsDecimalDigits: 4 }).padStart(13);
             let clientIp = String(req.ip).padStart(15);
             let statusCode = coloredStatusCode(reply.statusCode);
             let method = coloredMethod(req.method);
             logger.info(`${statusCode} | ${latency} | ${clientIp} | ${method} "${req.url}"`);
-            done();
+            return;
         })
-        .addHook("preHandler", (_, reply, done) => {
+        .addHook("preHandler", async (_, reply) => {
             reply.type("application/json");
-            done();
         })
         .route({ url: "/", method: "GET", handler: oneRandomMeme })
         .route({ url: "/:interface", method: "GET", handler: subredditOrCount })

@@ -1,5 +1,6 @@
-import { blue, gray, magenta, red, redBright, yellow, type Color } from "colorette";
+import { blue, gray, magenta, red, redBright, white, yellow, type Color } from "colorette";
 import { format, inspect } from "node:util";
+import { Console } from "node:console";
 import dayjs from "dayjs";
 import timeZone from "dayjs/plugin/timezone.js";
 import utc from "dayjs/plugin/utc.js";
@@ -7,6 +8,12 @@ dayjs.extend(utc);
 dayjs.extend(timeZone);
 
 export class Logger {
+    /**
+     * The console this writes to.
+     * @since 1.0.0
+     */
+    public readonly console: Console;
+
     /**
      * The depth of the inspect.
      */
@@ -20,20 +27,21 @@ export class Logger {
     /**
      * The context for each logging level.
      */
-    public readonly levels: Readonly<Record<Logger.Level, Readonly<Logger.LevelContext>>>;
+    public readonly levels: Map<Logger.Level, Logger.LevelContext>;
 
     public constructor(options: Logger.Options = {}) {
-        this.level = options.level ?? Logger.Level.Info;
+        this.console = new Console(process.stdout, process.stderr);
+        this.level = options.level ?? Logger.Level.None;
         this.depth = options.depth ?? 0;
-        this.levels = {
-            [Logger.Level.Trace]: { color: gray, method: "trace", name: "TRACE" },
-            [Logger.Level.Debug]: { color: magenta, method: "debug", name: "DEBUG" },
-            [Logger.Level.Info]: { color: blue, method: "info", name: "INFO" },
-            [Logger.Level.Warn]: { color: yellow, method: "warn", name: "WARN" },
-            [Logger.Level.Error]: { color: red, method: "error", name: "ERROR" },
-            [Logger.Level.Fatal]: { color: redBright, method: "error", name: "FATAL" },
-            ...options.levels,
-        };
+        this.levels = new Map<Logger.Level, Logger.LevelContext>([
+            [Logger.Level.None, { color: white, method: "info", name: "" }],
+            [Logger.Level.Trace, { color: gray, method: "trace", name: "TRACE" }],
+            [Logger.Level.Debug, { color: magenta, method: "debug", name: "DEBUG" }],
+            [Logger.Level.Info, { color: blue, method: "info", name: "INFO" }],
+            [Logger.Level.Warn, { color: yellow, method: "warn", name: "WARN" }],
+            [Logger.Level.Error, { color: red, method: "error", name: "ERROR" }],
+            [Logger.Level.Fatal, { color: redBright, method: "error", name: "FATAL" }],
+        ]);
     }
 
     public enabled(level: Logger.Level): boolean {
@@ -45,34 +53,34 @@ export class Logger {
     }
 
     public trace(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Trace)) this.write(this.levels[Logger.Level.Trace], value, args);
+        if (this.enabled(Logger.Level.Trace)) this.write(this.levels.get(Logger.Level.Trace) as Logger.LevelContext, value, args);
     }
 
     public debug(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Debug)) this.write(this.levels[Logger.Level.Debug], value, args);
+        if (this.enabled(Logger.Level.Debug)) this.write(this.levels.get(Logger.Level.Debug) as Logger.LevelContext, value, args);
     }
 
     public info(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Info)) this.write(this.levels[Logger.Level.Info], value, args);
+        if (this.enabled(Logger.Level.Info)) this.write(this.levels.get(Logger.Level.Info) as Logger.LevelContext, value, args);
     }
 
     public warn(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Warn)) this.write(this.levels[Logger.Level.Warn], value, args);
+        if (this.enabled(Logger.Level.Warn)) this.write(this.levels.get(Logger.Level.Warn) as Logger.LevelContext, value, args);
     }
 
     public error(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Error)) this.write(this.levels[Logger.Level.Error], value, args);
+        if (this.enabled(Logger.Level.Error)) this.write(this.levels.get(Logger.Level.Error) as Logger.LevelContext, value, args);
     }
 
     public fatal(value: unknown, ...args: readonly unknown[]): void {
-        if (this.enabled(Logger.Level.Fatal)) this.write(this.levels[Logger.Level.Fatal], value, args);
+        if (this.enabled(Logger.Level.Fatal)) this.write(this.levels.get(Logger.Level.Fatal) as Logger.LevelContext, value, args);
     }
 
     private write(context: Logger.LevelContext, value: unknown, args: readonly unknown[]): void {
-        const header = `[${context.color(this.time)}] ${context.color(context.name.padEnd(5))} (${process.pid}): `;
+        const header = `[${context.color(this.time)}] ${context.color(context.name.padEnd(5))} : `;
         const formatted = typeof value === "string" ? format(value, ...args) : inspect(value, { colors: true });
 
-        console[context.method](`${header}${formatted.replace(/\\n/g, `\n${header}`)}`);
+        this.console[context.method](`${header}${formatted.replace(/\\n/g, `\n${header}`)}`);
     }
 
     private get time() {
@@ -88,12 +96,13 @@ export namespace Logger {
     }
 
     export const enum Level {
-        Trace = "trace",
-        Debug = "debug",
-        Info = "info",
-        Warn = "warn",
-        Error = "error",
-        Fatal = "fatal",
+        None,
+        Trace,
+        Debug,
+        Info,
+        Warn,
+        Error,
+        Fatal,
     }
 
     export interface LevelContext {
