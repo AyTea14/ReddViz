@@ -22,7 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aytea/request": "^0.0.41",
+    "@aytea/request": "^0.0.7",
     "@fastify/express": "^2.0.2",
     "@sentry/integrations": "^7.12.1",
     "@sentry/node": "^7.12.1",

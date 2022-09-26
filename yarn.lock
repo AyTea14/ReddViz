@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@aytea/request@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/@aytea/request/-/request-0.0.41.tgz#44a4dfb8b1e36eedba2c45c4910b303186e992f4"
-  integrity sha512-Ajsj+7W3sg5HlKeA37u5tmMumXcLt99z8L4a+lMk7KwMqJ9gr/7wVa8SMKAdOll4d9An/Pw0wDbFZZvxiFasgw==
+"@aytea/request@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@aytea/request/-/request-0.0.7.tgz#8b194e167764b365369513833c19c48ee21d9611"
+  integrity sha512-CsLHuybJs6SF1Pw4BmGOThqK89wAMLSPP8SU9LPP9ojqs80A+8b6hfM8XM8VBu1wfqQtbqXOL6VCr6vVozHX4Q==
   dependencies:
-    undici "^5.x"
+    undici "5.10.0"
 
 "@esbuild/linux-loong64@0.15.7":
   version "0.15.7"
@@ -1910,7 +1910,7 @@ typescript@^4.8.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
   integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
 
-undici@^5.x:
+undici@5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/undici/-/undici-5.10.0.tgz#dd9391087a90ccfbd007568db458674232ebf014"
   integrity sha512-c8HsD3IbwmjjbLvoZuRI26TZic+TSEe8FPMLLOkN1AfYRhdjnKBU6yL+IwcSCbdZiX4e5t0lfMDLDCqj4Sq70g==
