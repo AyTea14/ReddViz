@@ -7,6 +7,7 @@
         "noEmit": true,
         "paths": {
             "#utils": ["utils/index"],
+            "#routes": ["routes/index"],
             "#functions": ["utils/functions"],
             "#types": ["types/index"],
             "#lib/*": ["lib/*"],

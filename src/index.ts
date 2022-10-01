@@ -1,7 +1,7 @@
 import "dotenv/config";
 import fastify from "fastify";
 import expressPlugin from "@fastify/express";
-import { gimmeRoutes, homePage } from "./routes/index.js";
+import { gimmeRoutes, homePage } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#functions";
 import { Logger } from "#utils";
 

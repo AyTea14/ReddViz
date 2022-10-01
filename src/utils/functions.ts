@@ -57,24 +57,15 @@ export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, do
 
 export const coloredMethod = (method: string): string => {
     let methods = ` ${method.padEnd(7)} `;
-    switch (method) {
-        case "GET":
-            return bgBlue(whiteBright(`${methods}`));
-        case "POST":
-            return bgCyan(whiteBright(`${methods}`));
-        case "PUT":
-            return bgYellow(black(`${methods}`));
-        case "DELETE":
-            return bgRed(whiteBright(`${methods}`));
-        case "PATCH":
-            return bgGreen(whiteBright(`${methods}`));
-        case "HEAD":
-            return bgMagenta(whiteBright(`${methods}`));
-        case "OPTIONS":
-            return bgWhite(black(`${methods}`));
-        default:
-            return method;
-    }
+
+    if (method === "GET") return bgBlue(whiteBright(`${methods}`));
+    else if (method === "POST") return bgCyan(whiteBright(`${methods}`));
+    else if (method === "PUT") return bgYellow(black(`${methods}`));
+    else if (method === "DELETE") return bgRed(whiteBright(`${methods}`));
+    else if (method === "PATCH") return bgGreen(whiteBright(`${methods}`));
+    else if (method === "HEAD") return bgMagenta(whiteBright(`${methods}`));
+    else if (method === "OPTIONS") return bgWhite(black(`${methods}`));
+    else return methods;
 };
 export const coloredStatusCode = (statusCode: number | string): string => {
     let statusCodes = ` ${String(statusCode).padStart(3)} `;
