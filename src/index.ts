@@ -5,7 +5,7 @@ import { gimmeRoutes, homePage } from "./routes/index.js";
 import { removeTrailingSlash, reqLogger } from "#functions";
 import { Logger } from "#utils";
 
-const PORT = parseInt(process.env.PORT as string) || 3000;
+const PORT = Number(`${process.env.PORT}`) || 3000;
 export const logger = new Logger({ level: Logger.Level.Debug });
 
 (async () => {
