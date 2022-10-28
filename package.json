@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsup",
     "watch": "tsup --watch",
-    "dev": "tsup --watch --onSuccess \"yarn start\"",
+    "dev": "tsup --watch --onSuccess \"npm run start\"",
     "start": "node --preserve-symlinks --enable-source-maps --no-warnings dist/index.js"
   },
   "imports": {
