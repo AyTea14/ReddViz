@@ -3,15 +3,17 @@ import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { logger } from "#root/index";
 import { Meme } from "../types";
 import prettyMs from "pretty-ms";
+import { extname } from "path";
 
 export function removeNonImagePosts(memes: Meme[] | null) {
     let onlyImagePosts = [];
     if (Array.isArray(memes)) {
         for (let meme of memes) {
             let url = meme.image;
+            let ext = extname(new URL(url).pathname);
             if (
-                !url?.includes(".gifv") &&
-                (url?.includes(".jpg") || url?.includes(".png") || url?.includes(".gif") || url?.includes(".jpeg"))
+                ![".gifv"].includes(ext) && //
+                [".jpg", ".png", ".gif", ".jpeg"].includes(ext)
             )
                 onlyImagePosts.push(meme);
         }
