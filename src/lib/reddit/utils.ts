@@ -1,6 +1,7 @@
 import request from "@aytea/request";
 import { randomInt } from "crypto";
 import { HttpStatusCode, Reddit } from "#types";
+import URI from "urijs";
 
 export function encodeCredentials(): string {
     return Buffer.from(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`).toString("base64");
@@ -33,9 +34,9 @@ export async function makeGetRequest(url: string, accessToken: string): Promise<
 export function getSubredditAPIURL(subreddit: string, limit: number): string {
     let times = ["day", "week", "month", "year", "all"];
 
-    let url = new URL(`r/${subreddit}/top`, `https://oauth.reddit.com/`);
-    url.searchParams.append("limit", `${limit}`);
-    url.searchParams.append("t", times[randomInt(times.length)]);
+    let url = new URI(`r/${subreddit}/top`, `https://oauth.reddit.com/`)
+        .search({ limit: `${limit}`, t: times[randomInt(times.length)] })
+        .toString();
 
-    return url.toString();
+    return url;
 }

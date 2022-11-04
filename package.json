@@ -25,7 +25,8 @@
     "@aytea/request": "^0.0.9",
     "@fastify/express": "^2.0.2",
     "@sentry/integrations": "^7.12.1",
-    "@sentry/node": "^7.12.1",
+    "@sentry/node": "^7.17.4",
+    "@types/urijs": "^1.19.19",
     "colorette": "^2.0.19",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
@@ -34,7 +35,8 @@
     "html-entities": "^2.3.3",
     "ioredis": "^4.28.5",
     "morgan": "^1.10.0",
-    "pretty-ms": "^8.0.0"
+    "pretty-ms": "^8.0.0",
+    "urijs": "^1.19.11"
   },
   "devDependencies": {
     "@swc/core": "^1.2.248",
