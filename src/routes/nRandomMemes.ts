@@ -4,7 +4,7 @@ import { getPostsFromCache } from "#lib/redis/redisHandler";
 import { getNRandomMemes, removeNonImagePosts } from "#functions";
 import { subreddits } from "#utils";
 import { writePostsToCache } from "#lib/redis/redisHandler";
-import { HttpStatusCode, InterfaceParams, Meme, NoNSFWMeme } from "#types";
+import { StatusCode, InterfaceParams, Meme, NoNSFWMeme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
 import Sentry from "@sentry/node";
 
@@ -33,18 +33,18 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
 
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
-                .code(HttpStatusCode.InternalServerError)
-                .json({ code: HttpStatusCode.InternalServerError, message: "Error while getting Memes" });
+                .code(StatusCode.InternalServerError)
+                .json({ code: StatusCode.InternalServerError, message: "Error while getting Memes" });
         }
 
         if (memes.length < count) count = memes.length;
         memes = getNRandomMemes(memes, count);
 
-        return reply.code(HttpStatusCode.Ok).json({ count: memes.length, memes });
+        return reply.code(StatusCode.Ok).json({ count: memes.length, memes });
     } catch (error: any) {
         Sentry.captureException(error);
         return reply
-            .code(error.code || HttpStatusCode.ServiceUnavailable)
-            .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });
+            .code(error.code || StatusCode.ServiceUnavailable)
+            .json({ code: error.code || StatusCode.ServiceUnavailable, message: error.message });
     }
 }

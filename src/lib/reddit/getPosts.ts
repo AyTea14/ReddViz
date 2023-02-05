@@ -1,11 +1,11 @@
 import { decode } from "html-entities";
-import { HttpStatusCode, Reddit, Meme } from "#types";
+import { StatusCode, Reddit, Meme } from "#types";
 import { getAccessToken } from "./oAuth.js";
 import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
 import Sentry from "@sentry/node";
 
 interface CustomRedditError {
-    code: HttpStatusCode;
+    code: StatusCode;
     message: string;
 }
 
@@ -24,49 +24,49 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
 
     let { body, statusCode } = await makeGetRequest(url, accessToken);
 
-    if (statusCode === HttpStatusCode.Unauthorized) {
+    if (statusCode === StatusCode.Unauthorized) {
         const req = await makeGetRequest(url, await getAccessToken());
         body = req.body;
         statusCode = req.statusCode;
     }
 
-    if (statusCode === HttpStatusCode.InternalServerError) {
+    if (statusCode === StatusCode.InternalServerError) {
         Sentry.captureMessage("Reddit is down!");
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.ServiceUnavailable,
+                code: StatusCode.ServiceUnavailable,
                 message: "Reddit is unreachable at the moment",
             },
         };
     }
 
-    if (statusCode === HttpStatusCode.Forbidden) {
+    if (statusCode === StatusCode.Forbidden) {
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.Forbidden,
+                code: StatusCode.Forbidden,
                 message: "Unable to Access Subreddit. Subreddit is Locked or Private",
             },
         };
     }
 
-    if (statusCode === HttpStatusCode.NotFound) {
+    if (statusCode === StatusCode.NotFound) {
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.NotFound,
+                code: StatusCode.NotFound,
                 message: "This subreddit does not exist.",
             },
         };
     }
 
-    if (statusCode !== HttpStatusCode.Ok) {
+    if (statusCode !== StatusCode.Ok) {
         Sentry.captureMessage(String(body));
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.InternalServerError,
+                code: StatusCode.InternalServerError,
                 message: "Unknown error while getting posts. Please try again",
             },
         };
@@ -76,7 +76,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.InternalServerError,
+                code: StatusCode.InternalServerError,
                 message: "Error while getting memes from subreddit. Please try again",
             },
         };
@@ -86,7 +86,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
         return {
             memes: null,
             response: {
-                code: HttpStatusCode.NotFound,
+                code: StatusCode.NotFound,
                 message: "This subreddit has no posts or doesn't exist.",
             },
         };
@@ -112,7 +112,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
         });
     }
 
-    return { memes, response: { code: HttpStatusCode.Ok, message: "OK" } };
+    return { memes, response: { code: StatusCode.Ok, message: "OK" } };
 }
 
 function getCleanPreviewImage(post: Reddit.PostDataElement): string[] {

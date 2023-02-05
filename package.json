@@ -24,9 +24,9 @@
   "dependencies": {
     "@aytea/request": "^0.0.9",
     "@fastify/express": "^2.0.2",
+    "@fastify/rate-limit": "^7.6.0",
     "@sentry/integrations": "^7.12.1",
     "@sentry/node": "^7.17.4",
-    "@types/urijs": "^1.19.19",
     "colorette": "^2.0.19",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
@@ -44,6 +44,7 @@
     "@types/ioredis": "^4.28.8",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.15",
+    "@types/urijs": "^1.19.19",
     "pino-pretty": "^9.1.0",
     "tslib": "^2.4.0",
     "tsup": "^6.2.3",

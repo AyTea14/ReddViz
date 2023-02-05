@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { getPostsFromCache } from "#lib/redis/redisHandler";
 import { getNRandomMemes, removeNonImagePosts } from "#functions";
 import { writePostsToCache } from "#lib/redis/redisHandler";
-import { HttpStatusCode, InterfaceParams, Meme, NoNSFWMeme } from "#types";
+import { StatusCode, InterfaceParams, Meme, NoNSFWMeme } from "#types";
 import { getPosts } from "#lib/reddit/getPosts";
 import Sentry from "@sentry/node";
 
@@ -31,23 +31,23 @@ export async function nRandomPostsFromSub(req: FastifyRequest, reply: FastifyRep
 
         if (Array.isArray(memes) && memes.length === 0 && filterNSFW) {
             return reply
-                .code(HttpStatusCode.BadRequest)
-                .json({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} only has NSFW Posts or has no Posts with Images` });
+                .code(StatusCode.BadRequest)
+                .json({ code: StatusCode.BadRequest, message: `r/${subreddit} only has NSFW Posts or has no Posts with Images` });
         }
         if (Array.isArray(memes) && memes.length === 0) {
             return reply
-                .code(HttpStatusCode.BadRequest)
-                .json({ code: HttpStatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` });
+                .code(StatusCode.BadRequest)
+                .json({ code: StatusCode.BadRequest, message: `r/${subreddit} has no Posts with Images` });
         }
 
         if (memes.length < count) count = memes.length;
         memes = getNRandomMemes(memes, count);
 
-        return reply.code(HttpStatusCode.Ok).json({ count: memes.length, memes });
+        return reply.code(StatusCode.Ok).json({ count: memes.length, memes });
     } catch (error: any) {
         Sentry.captureException(error);
         return reply
-            .code(error.code || HttpStatusCode.ServiceUnavailable)
-            .json({ code: error.code || HttpStatusCode.ServiceUnavailable, message: error.message });
+            .code(error.code || StatusCode.ServiceUnavailable)
+            .json({ code: error.code || StatusCode.ServiceUnavailable, message: error.message });
     }
 }

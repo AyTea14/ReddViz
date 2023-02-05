@@ -1,9 +1,11 @@
 import "dotenv/config";
 import fastify from "fastify";
 import expressPlugin from "@fastify/express";
+import fastifyRateLimit from "@fastify/rate-limit";
 import { gimmeRoutes, homePage } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#functions";
-import { Logger } from "#utils";
+import { config, Logger } from "#utils";
+import Redis from "ioredis";
 
 const PORT = Number(`${process.env.PORT}`) || 3000;
 export const logger = new Logger({ level: Logger.Level.Debug });
@@ -14,6 +16,7 @@ export const logger = new Logger({ level: Logger.Level.Debug });
         trustProxy: true,
     });
 
+    await server.register(fastifyRateLimit, { global: true, max: 45, timeWindow: "30s", redis: new Redis(config.redis.url), });
     await server.register(gimmeRoutes, { prefix: "gimme" });
     await server.register(expressPlugin);
     server
