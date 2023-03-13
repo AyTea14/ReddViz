@@ -19,21 +19,27 @@ export default class {
         this.client.connect(() => logger.info("connected to redis database"));
     }
 
-    async set(key: string, data: any, callback: (setSuccessful: boolean) => void) {
+    set<T>(key: string, data: T): Promise<boolean>;
+    set<T>(key: string, data: T, callback: (setSuccessful: boolean) => void): Promise<boolean>;
+    async set<T>(key: string, data: T, callback?: (setSuccessful: boolean) => void) {
         if (!this.client) {
             throw new Error("No redis client");
         }
 
         try {
-            await this.client.setex(key, this.expire, Buffer.from(data));
+            await this.client.setex(key, this.expire, Buffer.from(`${data}`));
 
             if (callback) callback(true);
+            return true;
         } catch (e) {
             if (callback) callback(false);
+            throw e;
         }
     }
 
-    async get(key: string, callback: (result: boolean | Buffer) => void) {
+    get(key: string): Promise<Buffer>;
+    get(key: string, callback: (result: boolean | Buffer) => void): Promise<Buffer>;
+    async get(key: string, callback?: (result: boolean | Buffer) => void) {
         if (!this.client) {
             throw new Error("No redis client");
         }
@@ -42,8 +48,10 @@ export default class {
             const data = await this.client.getBuffer(key);
 
             if (callback) callback(data);
+            return data;
         } catch (e) {
             if (callback) callback(false);
+            throw e;
         }
     }
 }

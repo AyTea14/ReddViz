@@ -16,7 +16,13 @@ export const logger = new Logger({ level: Logger.Level.Debug });
         trustProxy: true,
     });
 
-    await server.register(fastifyRateLimit, { global: true, max: 45, timeWindow: "30s", redis: new Redis(config.redis.url) });
+    await server.register(fastifyRateLimit, {
+        global: true,
+        max: 45,
+        timeWindow: "30s",
+        redis: new Redis(config.redis.url),
+        nameSpace: "rateLimit:",
+    });
     await server.register(gimmeRoutes, { prefix: "gimme" });
     await server.register(expressPlugin);
     server
