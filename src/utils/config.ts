@@ -4,6 +4,6 @@ export const config = {
         port: parseInt(process.env.STORAGE_PORT!) || 6273,
         password: process.env.STORAGE_PASSWORD || undefined,
         url: process.env.REDISCLOUD_URL,
-        expire: 7200,
+        expire: Number(process.env.STORAGE_EXPIRE) || 7200,
     },
 };
