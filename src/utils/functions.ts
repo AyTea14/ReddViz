@@ -10,12 +10,14 @@ export function removeNonImagePosts(memes: Meme[] | null) {
     if (Array.isArray(memes)) {
         for (let meme of memes) {
             let url = meme.image;
-            let ext = extname(new URL(url).pathname);
-            if (
-                ![".gifv"].includes(ext) && //
-                [".jpg", ".png", ".gif", ".jpeg"].includes(ext)
-            )
-                onlyImagePosts.push(meme);
+            try {
+                let ext = extname(new URL(url).pathname);
+                if (
+                    ![".gifv"].includes(ext) && //
+                    [".jpg", ".png", ".gif", ".jpeg"].includes(ext)
+                )
+                    onlyImagePosts.push(meme);
+            } catch (error) {}
         }
     }
     return onlyImagePosts;
@@ -69,7 +71,7 @@ export const coloredMethod = (method: string): string => {
     else if (method === "OPTIONS") return bgWhite(black(`${methods}`));
     else return methods;
 };
-export const coloredStatusCode = (statusCode: number | string): string => {
+export const coloredStatusCode = (statusCode: number): string => {
     let statusCodes = ` ${String(statusCode).padStart(3)} `;
     if (statusCode >= 200 && statusCode < 300) return bgGreen(whiteBright(`${statusCodes}`));
     else if (statusCode >= 300 && statusCode < 400) return bgWhite(black(`${statusCodes}`));
