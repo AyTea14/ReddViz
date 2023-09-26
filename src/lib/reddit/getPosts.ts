@@ -3,6 +3,7 @@ import { StatusCode, Reddit, Meme } from "#types";
 import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
 import { accessToken } from "#lib/redis/redisHandler";
 import Sentry from "@sentry/node";
+import { logger } from "#root/index";
 
 interface CustomRedditError {
     code: StatusCode;
@@ -20,6 +21,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     let cached = await accessToken();
     let { body, statusCode } = await makeGetRequest(url, cached.token);
 
+    logger.debug(statusCode, subreddit);
     if (statusCode === StatusCode.Unauthorized) {
         cached = await accessToken(true);
         const req = await makeGetRequest(url, cached.token);
