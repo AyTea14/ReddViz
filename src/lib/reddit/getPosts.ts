@@ -25,7 +25,8 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     let { body, statusCode } = await makeGetRequest(url, accessToken);
 
     if (statusCode === StatusCode.Unauthorized) {
-        const req = await makeGetRequest(url, await getAccessToken());
+        accessToken = await getAccessToken();
+        const req = await makeGetRequest(url, accessToken);
         body = req.body;
         statusCode = req.statusCode;
     }
