@@ -3,7 +3,7 @@ import { AccessTokenBody } from "#types";
 import { encodeCredentials } from "./utils.js";
 import Sentry from "@sentry/node";
 
-export async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<{ token: string; expiresIn: number }> {
     const encodedCredentials = encodeCredentials();
 
     const accessToken = await request("https://www.reddit.com/api/v1/access_token")
@@ -14,13 +14,11 @@ export async function getAccessToken(): Promise<string> {
         .options("throwOnError", true)
         .post()
         .json<AccessTokenBody>()
-        .then((data) => {
-            return data.access_token;
-        })
+        .then((data) => ({ token: data.access_token, expiresIn: data.expires_in }))
         .catch((err) => {
             Sentry.captureException(err);
             console.log(`Error while trying to get access token: ` + err);
-            return "";
+            return { token: "", expiresIn: 0 };
         });
 
     return accessToken;

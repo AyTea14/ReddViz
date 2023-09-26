@@ -37,6 +37,19 @@ export default class {
         }
     }
 
+    async setex<T>(key: string, data: T, seconds: number) {
+        if (!this.client) {
+            throw new Error("No redis client");
+        }
+
+        try {
+            await this.client.setex(key, seconds, Buffer.from(`${data}`));
+            return true;
+        } catch (e) {
+            return e;
+        }
+    }
+
     get(key: string): Promise<Buffer>;
     get(key: string, callback: (result: boolean | Buffer) => void): Promise<Buffer>;
     async get(key: string, callback?: (result: boolean | Buffer) => void) {

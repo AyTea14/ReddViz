@@ -16,7 +16,7 @@ export async function nRandomMemes(req: FastifyRequest, reply: FastifyReply) {
     if (count > 50) count = 50;
 
     try {
-        let memes: Meme[] = JSON.parse((await getPostsFromCache(subreddit)) as any);
+        let memes: Meme[] = JSON.parse(`${await getPostsFromCache(subreddit)}`);
 
         if (!memes || memes.length === 0) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);

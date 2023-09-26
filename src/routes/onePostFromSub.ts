@@ -12,7 +12,7 @@ export async function onePostFromSub(req: FastifyRequest, reply: FastifyReply) {
     let filterNSFW = (req.query as NoNSFWMeme).nonsfw === "true" ? true : false;
 
     try {
-        let memes: Meme[] = JSON.parse((await getPostsFromCache(subreddit)) as any);
+        let memes: Meme[] = JSON.parse(`${await getPostsFromCache(subreddit)}`);
 
         if (!memes || memes.length === 0) {
             let { memes: freshMemes, response } = await getPosts(subreddit, 100);
