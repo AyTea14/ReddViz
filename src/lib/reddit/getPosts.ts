@@ -21,7 +21,7 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     let cached = await accessToken();
     let { body, statusCode } = await makeGetRequest(url, cached.token);
 
-    logger.debug(statusCode, subreddit);
+    logger.info(statusCode, subreddit);
     if (statusCode === StatusCode.Unauthorized) {
         cached = await accessToken(true);
         const req = await makeGetRequest(url, cached.token);
