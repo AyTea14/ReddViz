@@ -1,9 +1,8 @@
-import { decode } from "html-entities";
-import { StatusCode, Reddit, Meme } from "#types";
-import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
 import { accessToken } from "#lib/redis/redisHandler";
+import { Meme, Reddit, StatusCode } from "#types";
 import Sentry from "@sentry/node";
-import { logger } from "#root/index";
+import { decode } from "html-entities";
+import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
 
 interface CustomRedditError {
     code: StatusCode;
