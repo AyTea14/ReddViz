@@ -1,18 +1,20 @@
 {
     "extends": "../tsconfig.base.json",
     "compilerOptions": {
+        "allowJs": true,
         "outDir": "../dist",
         "rootDir": ".",
         "baseUrl": ".",
-        "noEmit": true,
+        "skipLibCheck": true,
         "paths": {
-            "#utils": ["utils/index"],
-            "#routes": ["routes/index"],
-            "#functions": ["utils/functions"],
             "#types": ["types/index"],
+            "#routes": ["routes/index"],
+            "#utils/*": ["utils/*"],
             "#lib/*": ["lib/*"],
             "#root/*": ["*"]
-        }
+        },
+        "composite": false
     },
-    "include": ["."]
+    "include": [".", "./**/*.json"],
+    "exclude": ["./tsconfig.json"]
 }

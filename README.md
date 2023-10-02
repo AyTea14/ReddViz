@@ -2,7 +2,7 @@
 
 JSON API for a random meme scraped from reddit (image only).
 
-API Link: [https://memeapi.cyclic.app/gimme](https://memeapi.cyclic.app/gimme)
+API Link: [https://memeapi.ujol.dev/gimme](https://memeapi.ujol.dev/gimme)
 
 **Example Response:**
 
@@ -35,9 +35,9 @@ API Link: [https://memeapi.cyclic.app/gimme](https://memeapi.cyclic.app/gimme)
 
 In order to get multiple memes in a single request specify the count with the following endpoint.
 
-Endpoint: [/gimme/{count}](https://memeapi.cyclic.app/gimme/2)
+Endpoint: [/gimme/{count}](https://memeapi.ujol.dev/gimme/2)
 
-Example: [https://memeapi.cyclic.app/gimme/2](https://memeapi.cyclic.app/gimme/2)
+Example: [https://memeapi.ujol.dev/gimme/2](https://memeapi.ujol.dev/gimme/2)
 
 Response:
 
@@ -96,9 +96,9 @@ Response:
 
 By default the API grabs a random meme from this subreddits [list](src/utils/subreddits.js). To provide your own custom subreddit use the following endpoint.
 
-Endpoint: [/gimme/{subreddit}](https://memeapi.cyclic.app/gimme/animemes)
+Endpoint: [/gimme/{subreddit}](https://memeapi.ujol.dev/gimme/animemes)
 
-Example: [https://memeapi.cyclic.app/gimme/animemes](https://memeapi.cyclic.app/gimme/animemes)
+Example: [https://memeapi.ujol.dev/gimme/animemes](https://memeapi.ujol.dev/gimme/animemes)
 
 Response:
 
@@ -133,9 +133,9 @@ Response:
 
 In order to get a custom number of memes from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
 
-Endpoint: [/gimme/{subreddit}/{count}](https://memeapi.cyclic.app/gimme/animemes/2)
+Endpoint: [/gimme/{subreddit}/{count}](https://memeapi.ujol.dev/gimme/animemes/2)
 
-Example: [https://memeapi.cyclic.app/gimme/animemes/2](https://memeapi.cyclic.app/gimme/animemes/2)
+Example: [https://memeapi.ujol.dev/gimme/animemes/2](https://memeapi.ujol.dev/gimme/animemes/2)
 
 Response:
 

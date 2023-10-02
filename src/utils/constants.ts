@@ -1,4 +1,4 @@
-export const subreddits = [
+export const SUBREDDITS = [
     "memes",
     "me_irl",
     "dankmemes",
@@ -9,3 +9,7 @@ export const subreddits = [
     "memes_of_the_dank",
     "animemes",
 ];
+
+export const SUB_PREFIX = "subreddit";
+export const SUB_EXPIRE = 7200;
+export const ACCESS_TOKEN = "accessToken";

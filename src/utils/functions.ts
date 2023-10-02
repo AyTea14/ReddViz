@@ -1,37 +1,37 @@
+import { Meme } from "#types";
 import { bgBlue, bgCyan, bgGreen, bgMagenta, bgRed, bgWhite, bgYellow, black, whiteBright } from "colorette";
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
-import { logger } from "#root/index";
-import { Meme } from "../types";
-import prettyMs from "pretty-ms";
 import { extname } from "path";
+import { logger } from "#root/index";
+import prettyMs from "pretty-ms";
 
-export function removeNonImagePosts(memes: Meme[] | null) {
-    let onlyImagePosts = [];
+export function onlyImagePosts(memes: Meme[] | null) {
+    let imagePosts: Meme[] = [];
     if (Array.isArray(memes)) {
         for (let meme of memes) {
             let url = meme.image;
             try {
                 let ext = extname(new URL(url).pathname);
                 if (
-                    ![".gifv"].includes(ext) && //
-                    [".jpg", ".png", ".gif", ".jpeg"].includes(ext)
+                    ![".gifv"].includes(ext) &&
+                    [".jpg", ".png", ".gif", ".jpeg"].includes(ext) //
                 )
-                    onlyImagePosts.push(meme);
+                    imagePosts.push(meme);
             } catch (error) {}
         }
     }
-    return onlyImagePosts;
+    return imagePosts;
 }
 
-export function getNRandomMemes<T>(arr: Array<T>, picks: number): Array<T> {
-    if (!Array.isArray(arr)) throw new Error("getNRandomMemes() expect an array as parameter.");
+export function getNGimme<T>(arr: Array<T>, picks: number): Array<T> {
+    if (!Array.isArray(arr)) throw new Error("getNGimme() expect an array as parameter.");
 
     let rng = Math.random;
     if (typeof picks === "number" && picks > 1) {
         let len: number = arr.length,
             collection = arr.slice(),
             random: Array<T> = [],
-            index;
+            index = 0;
 
         while (picks && len) {
             index = Math.floor(rng() * len);
@@ -45,10 +45,6 @@ export function getNRandomMemes<T>(arr: Array<T>, picks: number): Array<T> {
     }
 
     return [arr[Math.floor(rng() * arr.length)]];
-}
-
-export function formatJSON(payload: unknown, indent: number = 3) {
-    return JSON.stringify(payload, undefined, indent);
 }
 
 export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {

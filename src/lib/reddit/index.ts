@@ -1,34 +1,27 @@
-import { accessToken } from "#lib/redis/redisHandler";
+import { redis } from "#lib/redis";
+import { ACCESS_TOKEN } from "#utils/constants";
+import { isNullish } from "@sapphire/utilities";
 import { Meme, Reddit, StatusCode } from "#types";
-import Sentry from "@sentry/node";
 import { decode } from "html-entities";
-import { getSubredditAPIURL, makeGetRequest } from "./utils.js";
+import { getApiURL, getToken } from "./utils.js";
+import { makeRequest } from "./request.js";
 
-interface CustomRedditError {
-    code: StatusCode;
-    message: string;
-}
+export async function getPosts(subreddit: string, count: number) {
+    const url = getApiURL(subreddit, count);
 
-interface Posts {
-    memes: Meme[] | null;
-    response: CustomRedditError;
-}
+    let cachedToken = await redis.get(ACCESS_TOKEN);
+    let token = isNullish(cachedToken) ? await getToken() : cachedToken;
 
-export async function getPosts(subreddit: string, count: number): Promise<Posts> {
-    const url = getSubredditAPIURL(subreddit, count);
-
-    let cached = await accessToken();
-    let { body, statusCode } = await makeGetRequest(url, cached.token);
+    let { body, statusCode } = await makeRequest(url, token);
 
     if (statusCode === StatusCode.Unauthorized) {
-        cached = await accessToken(true);
-        const req = await makeGetRequest(url, cached.token);
+        token = await getToken();
+        const req = await makeRequest(url, token);
         body = req.body;
         statusCode = req.statusCode;
     }
 
     if (statusCode === StatusCode.InternalServerError) {
-        Sentry.captureMessage("Reddit is down!");
         return {
             memes: null,
             response: {
@@ -59,7 +52,6 @@ export async function getPosts(subreddit: string, count: number): Promise<Posts>
     }
 
     if (statusCode !== StatusCode.Ok) {
-        Sentry.captureMessage(String(body));
         return {
             memes: null,
             response: {

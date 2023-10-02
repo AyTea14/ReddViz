@@ -1,5 +1,12 @@
 type NonNullObject = {} & object;
 
+export interface AccessTokenBody {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    scope: string;
+}
+
 export namespace Reddit {
     export interface Response {
         kind: string;

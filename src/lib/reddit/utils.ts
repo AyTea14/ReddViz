@@ -1,37 +1,16 @@
-import request from "@aytea/request";
+import { AccessTokenBody } from "#types";
+import { redis } from "#lib/redis";
+import { ACCESS_TOKEN } from "#utils/constants";
+import { envParseString } from "@skyra/env-utilities";
 import { randomInt } from "crypto";
-import { StatusCode, Reddit } from "#types";
+import { request } from "undici";
 import URI from "urijs";
 
-export function encodeCredentials(): string {
-    return Buffer.from(`${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`).toString("base64");
+function encodeCredentials(): string {
+    return btoa(`${envParseString("REDDIT_CLIENT_ID")}:${envParseString("REDDIT_CLIENT_SECRET")}`);
 }
 
-interface GetRequestData {
-    body: Reddit.Response | null;
-    statusCode: number;
-}
-
-export async function makeGetRequest(url: string, accessToken: string): Promise<GetRequestData> {
-    const data = await request(url)
-        .auth(accessToken, "Bearer")
-        .options("throwOnError", true)
-        .header("accept", "*/*")
-        .header("host", "oauth.reddit.com")
-        .header("user-agent", (process.env.USER_AGENT as string) ?? "MemeApi/0.0.1")
-        .header("cache-control", "no-cache")
-        .result()
-        .then(async (data) => {
-            return { body: (await data.body.json()) as Reddit.Response, statusCode: data.statusCode };
-        })
-        .catch((err) => {
-            return { body: null, statusCode: err.statusCode || StatusCode.InternalServerError };
-        });
-
-    return data;
-}
-
-export function getSubredditAPIURL(subreddit: string, limit: number): string {
+export function getApiURL(subreddit: string, limit: number): string {
     let times = ["day", "week", "month", "year", "all"];
 
     let url = new URI(`r/${subreddit}/top`, `https://oauth.reddit.com/`)
@@ -39,4 +18,28 @@ export function getSubredditAPIURL(subreddit: string, limit: number): string {
         .toString();
 
     return url;
+}
+
+export async function getToken() {
+    const encodedCredentials = encodeCredentials();
+
+    try {
+        const res = await request("https://www.reddit.com/api/v1/access_token", {
+            method: "POST",
+            body: new URLSearchParams({ grant_type: "client_credentials" }).toString(),
+            headers: {
+                "user-agent": envParseString("USER_AGENT") ?? "MemeApi/0.0.1",
+                "content-type": "application/x-www-form-urlencoded",
+                authorization: `Basic ${encodedCredentials}`,
+            },
+            throwOnError: true,
+        });
+        const data = (await res.body.json()) as AccessTokenBody;
+
+        redis.setex(ACCESS_TOKEN, data.expires_in, data.access_token);
+
+        return data.access_token;
+    } catch (error) {
+        return "";
+    }
 }
