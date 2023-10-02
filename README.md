@@ -35,9 +35,9 @@ API Link: [https://memeapi.ujol.dev/gimme](https://memeapi.ujol.dev/gimme)
 
 In order to get multiple memes in a single request specify the count with the following endpoint.
 
-Endpoint: [/gimme/{count}](https://memeapi.ujol.dev/gimme/2)
+Endpoint: [/gimme?count={count}](https://memeapi.ujol.dev/gimme?count=2)
 
-Example: [https://memeapi.ujol.dev/gimme/2](https://memeapi.ujol.dev/gimme/2)
+Example: [https://memeapi.ujol.dev/gimme?count=2](https://memeapi.ujol.dev/gimme?count=2)
 
 Response:
 
@@ -133,9 +133,9 @@ Response:
 
 In order to get a custom number of memes from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
 
-Endpoint: [/gimme/{subreddit}/{count}](https://memeapi.ujol.dev/gimme/animemes/2)
+Endpoint: [/gimme/{subreddit}?count={count}](https://memeapi.ujol.dev/gimme/animemes?count=2)
 
-Example: [https://memeapi.ujol.dev/gimme/animemes/2](https://memeapi.ujol.dev/gimme/animemes/2)
+Example: [https://memeapi.ujol.dev/gimme/animemes?count=2](https://memeapi.ujol.dev/gimme/animemes?count=2)
 
 Response:
 
