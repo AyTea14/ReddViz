@@ -1,8 +1,10 @@
-# Meme API (Inspired by [D3vd](https://github.com/D3vd/Meme_Api) but written in TypeScript)
+# ReddCull (Followed [D3vd/Meme_Api](https://github.com/D3vd/Meme_Api) code structures)
 
-JSON API for a random meme scraped from reddit (image only).
+JSON API for a random posts scraped from reddit (image or gif only).
 
-API Link: [https://memeapi.ujol.dev/gimme](https://memeapi.ujol.dev/gimme)
+*By default will fetch from multiple memes subreddits. If you want to use custom subreddit, please look at [Specify Subreddit](#specify-subreddit)*
+
+API Link: [https://reddcull.ujol.dev/gimme](https://reddcull.ujol.dev/gimme)
 
 **Example Response:**
 
@@ -33,11 +35,11 @@ API Link: [https://memeapi.ujol.dev/gimme](https://memeapi.ujol.dev/gimme)
 
 ### Specify count (MAX 50)
 
-In order to get multiple memes in a single request specify the count with the following endpoint.
+In order to get multiple posts in a single request specify the count with the following endpoint.
 
-Endpoint: [/gimme?count={count}](https://memeapi.ujol.dev/gimme?count=2)
+Endpoint: [/gimme?count={count}](https://reddcull.ujol.dev/gimme?count=2)
 
-Example: [https://memeapi.ujol.dev/gimme?count=2](https://memeapi.ujol.dev/gimme?count=2)
+Example: [https://reddcull.ujol.dev/gimme?count=2](https://reddcull.ujol.dev/gimme?count=2)
 
 Response:
 
@@ -94,11 +96,11 @@ Response:
 
 ### Specify Subreddit
 
-By default the API grabs a random meme from this subreddits [list](src/utils/subreddits.js). To provide your own custom subreddit use the following endpoint.
+By default the API grabs a random post from this subreddits [list](src/utils/subreddits.js). To provide your own custom subreddit use the following endpoint.
 
-Endpoint: [/gimme/{subreddit}](https://memeapi.ujol.dev/gimme/animemes)
+Endpoint: [/gimme/{subreddit}](https://reddcull.ujol.dev/gimme/animemes)
 
-Example: [https://memeapi.ujol.dev/gimme/animemes](https://memeapi.ujol.dev/gimme/animemes)
+Example: [https://reddcull.ujol.dev/gimme/animemes](https://reddcull.ujol.dev/gimme/animemes)
 
 Response:
 
@@ -131,11 +133,11 @@ Response:
 
 ### Specify Subreddit Count (MAX 50)
 
-In order to get a custom number of memes from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
+In order to get a custom number of posts from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
 
-Endpoint: [/gimme/{subreddit}?count={count}](https://memeapi.ujol.dev/gimme/animemes?count=2)
+Endpoint: [/gimme/{subreddit}?count={count}](https://reddcull.ujol.dev/gimme/animemes?count=2)
 
-Example: [https://memeapi.ujol.dev/gimme/animemes?count=2](https://memeapi.ujol.dev/gimme/animemes?count=2)
+Example: [https://reddcull.ujol.dev/gimme/animemes?count=2](https://reddcull.ujol.dev/gimme/animemes?count=2)
 
 Response:
 
