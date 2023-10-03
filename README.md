@@ -2,7 +2,7 @@
 
 JSON API for a random posts scraped from reddit (image or gif only).
 
-*By default will fetch from multiple memes subreddits. If you want to use custom subreddit, please look at [Specify Subreddit](#specify-subreddit)*
+*See [Specify Subreddit](#specify-subreddit) if you want to use another subreddit*
 
 API Link: [https://reddcull.ujol.dev/gimme](https://reddcull.ujol.dev/gimme)
 
