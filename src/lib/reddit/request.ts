@@ -9,7 +9,7 @@ export async function makeRequest(url: string, token: string) {
                 authorization: `Bearer ${token}`,
                 accept: "*/*",
                 host: "oauth.reddit.com",
-                "user-agent": envParseString("USER_AGENT") ?? "MemeApi/0.0.1",
+                "user-agent": envParseString("USER_AGENT") ?? "ReddCull/0.0.1",
                 "cache-control": "no-cache",
             },
             throwOnError: true,

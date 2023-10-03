@@ -1,22 +1,24 @@
-import { Meme } from "#types";
+import { Post } from "#types";
 import { bgBlue, bgCyan, bgGreen, bgMagenta, bgRed, bgWhite, bgYellow, black, whiteBright } from "colorette";
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { extname } from "path";
 import { logger } from "#root/index";
 import prettyMs from "pretty-ms";
 
-export function onlyImagePosts(memes: Meme[] | null) {
-    let imagePosts: Meme[] = [];
-    if (Array.isArray(memes)) {
-        for (let meme of memes) {
-            let url = meme.image;
+export function onlyImagePosts(posts: Post[] | null) {
+    let imagePosts: Post[] = [];
+    if (Array.isArray(posts)) {
+        for (let post of posts) {
+            let url = post.image;
             try {
                 let ext = extname(new URL(url).pathname);
+
+                console.log(ext, url);
                 if (
                     ![".gifv"].includes(ext) &&
                     [".jpg", ".png", ".gif", ".jpeg"].includes(ext) //
                 )
-                    imagePosts.push(meme);
+                    imagePosts.push(post);
             } catch (error) {}
         }
     }

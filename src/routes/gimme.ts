@@ -1,6 +1,6 @@
 import { getPosts } from "#lib/reddit";
 import { redis } from "#lib/redis";
-import { Meme, StatusCode } from "#types";
+import { Post, StatusCode } from "#types";
 import { SUBREDDITS, SUB_EXPIRE, SUB_PREFIX } from "#utils/constants";
 import { getNGimme, onlyImagePosts } from "#utils/functions";
 import { isNullish, isNullishOrEmpty } from "@sapphire/utilities";
@@ -22,39 +22,39 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
     }
 
     try {
-        let memes = JSON.parse(`${await redis.getBuffer(`${SUB_PREFIX}:${subreddit}`)}`) as Meme[];
+        let posts = JSON.parse(`${await redis.getBuffer(`${SUB_PREFIX}:${subreddit}`)}`) as Post[];
 
-        if (isNullishOrEmpty(memes)) {
-            let { memes: freshMemes, response } = await getPosts(subreddit, 100);
+        if (isNullishOrEmpty(posts)) {
+            let { posts: freshPosts, response } = await getPosts(subreddit, 100);
 
-            if (isNullishOrEmpty(freshMemes)) {
+            if (isNullishOrEmpty(freshPosts)) {
                 return reply.code(response.code).send(response);
             }
 
-            freshMemes = onlyImagePosts(freshMemes);
-            await redis.setex(`${SUB_PREFIX}:${subreddit}`, SUB_EXPIRE, JSON.stringify(freshMemes));
-            memes = freshMemes;
+            freshPosts = onlyImagePosts(freshPosts);
+            await redis.setex(`${SUB_PREFIX}:${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
+            posts = freshPosts;
         }
-        memes = nonsfw ? Array.from(memes).filter((x) => !x.nsfw) : memes;
+        posts = nonsfw ? Array.from(posts).filter((x) => !x.nsfw) : posts;
 
-        if (nonsfw && isNullishOrEmpty(memes) && memes.every((x) => x.nsfw))
+        if (nonsfw && isNullishOrEmpty(posts) && posts.every((x) => x.nsfw))
             return reply.code(StatusCode.ServiceUnavailable).send({
                 code: StatusCode.ServiceUnavailable,
                 message: `r/${subreddit} only has NSFW Posts or has no Posts with Images`,
             });
-        if (isNullishOrEmpty(memes))
+        if (isNullishOrEmpty(posts))
             return reply
                 .code(StatusCode.InternalServerError)
-                .send({ code: StatusCode.InternalServerError, message: "Error while getting memes" });
+                .send({ code: StatusCode.InternalServerError, message: "Error while getting posts" });
 
         if (!isNaN(count)) {
-            if (memes.length < count) count = memes.length;
-            memes = getNGimme(memes, count);
-            return reply.code(StatusCode.Ok).send({ count, memes });
+            if (posts.length < count) count = posts.length;
+            posts = getNGimme(posts, count);
+            return reply.code(StatusCode.Ok).send({ count, posts });
         }
 
-        let meme = memes[randomInt(memes.length)];
-        return reply.code(StatusCode.Ok).send(meme);
+        let post = posts[randomInt(posts.length)];
+        return reply.code(StatusCode.Ok).send(post);
     } catch (error: any) {
         return reply
             .code(error.code ?? StatusCode.ServiceUnavailable)

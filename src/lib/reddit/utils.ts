@@ -1,6 +1,6 @@
 import { AccessTokenBody } from "#types";
 import { redis } from "#lib/redis";
-import { ACCESS_TOKEN } from "#utils/constants";
+import { ACCESS_TOKEN, TIMES } from "#utils/constants";
 import { envParseString } from "@skyra/env-utilities";
 import { randomInt } from "crypto";
 import { request } from "undici";
@@ -11,10 +11,8 @@ function encodeCredentials(): string {
 }
 
 export function getApiURL(subreddit: string, limit: number): string {
-    let times = ["day", "week", "month", "year", "all"];
-
     let url = new URI(`r/${subreddit}/top`, `https://oauth.reddit.com/`)
-        .search({ limit: `${limit}`, t: times[randomInt(times.length)] })
+        .search({ limit: `${limit}`, t: TIMES[randomInt(TIMES.length)] })
         .toString();
 
     return url;
@@ -28,7 +26,7 @@ export async function getToken() {
             method: "POST",
             body: new URLSearchParams({ grant_type: "client_credentials" }).toString(),
             headers: {
-                "user-agent": envParseString("USER_AGENT") ?? "MemeApi/0.0.1",
+                "user-agent": envParseString("USER_AGENT") ?? "ReddCull/0.0.1",
                 "content-type": "application/x-www-form-urlencoded",
                 authorization: `Basic ${encodedCredentials}`,
             },

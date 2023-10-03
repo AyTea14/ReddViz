@@ -9,6 +9,7 @@ export const SUBREDDITS = [
     "memes_of_the_dank",
     "animemes",
 ];
+export const TIMES = ["day", "week", "month", "year", "all"];
 
 export const SUB_PREFIX = "subreddit";
 export const SUB_EXPIRE = 7200;
