@@ -40,12 +40,13 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
         if (nonsfw && isNullishOrEmpty(posts) && posts.every((x) => x.nsfw))
             return reply.code(StatusCode.ServiceUnavailable).send({
                 code: StatusCode.ServiceUnavailable,
-                message: `r/${subreddit} only has NSFW Posts or has no Posts with Images`,
+                message: `r/${subreddit} only has NSFW Posts`,
             });
         if (isNullishOrEmpty(posts))
-            return reply
-                .code(StatusCode.InternalServerError)
-                .send({ code: StatusCode.InternalServerError, message: "Error while getting posts" });
+            return reply.code(StatusCode.InternalServerError).send({
+                code: StatusCode.InternalServerError,
+                message: isNullish(params.subreddit) ? `r/${subreddit} has no Posts with Images` : "Error while getting posts",
+            });
 
         if (!isNaN(count)) {
             if (posts.length < count) count = posts.length;
