@@ -1,15 +1,15 @@
-import { redis } from "#lib/redis";
 import { ACCESS_TOKEN } from "#utils/constants";
 import { isNullish } from "@sapphire/utilities";
 import { Post, Reddit, StatusCode } from "#types";
 import { decode } from "html-entities";
 import { getApiURL, getToken } from "./utils.js";
 import { makeRequest } from "./request.js";
+import { fastify } from "#root/index";
 
 export async function getPosts(subreddit: string, count: number) {
     const url = getApiURL(subreddit, count);
 
-    let cachedToken = await redis.get(ACCESS_TOKEN);
+    let cachedToken = await fastify.redis.get(ACCESS_TOKEN);
     let token = isNullish(cachedToken) ? await getToken() : cachedToken;
 
     let { body, statusCode } = await makeRequest(url, token);

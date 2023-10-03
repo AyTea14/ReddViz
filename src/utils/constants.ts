@@ -11,6 +11,6 @@ export const SUBREDDITS = [
 ];
 export const TIMES = ["day", "week", "month", "year", "all"];
 
-export const SUB_PREFIX = "subreddit";
+export const SUB_PREFIX = "subreddit;";
 export const SUB_EXPIRE = 7200;
 export const ACCESS_TOKEN = "accessToken";

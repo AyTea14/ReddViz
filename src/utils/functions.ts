@@ -12,8 +12,6 @@ export function onlyImagePosts(posts: Post[] | null) {
             let url = post.image;
             try {
                 let ext = extname(new URL(url).pathname);
-
-                console.log(ext, url);
                 if (
                     ![".gifv"].includes(ext) &&
                     [".jpg", ".png", ".gif", ".jpeg"].includes(ext) //

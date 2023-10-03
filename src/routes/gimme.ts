@@ -1,17 +1,17 @@
 import { getPosts } from "#lib/reddit";
-import { redis } from "#lib/redis";
 import { Post, StatusCode } from "#types";
 import { SUBREDDITS, SUB_EXPIRE, SUB_PREFIX } from "#utils/constants";
 import { getNGimme, onlyImagePosts } from "#utils/functions";
 import { isNullish, isNullishOrEmpty } from "@sapphire/utilities";
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { fastify } from "#root/index";
 
 export async function gimme(req: FastifyRequest, reply: FastifyReply) {
     let query = req.query as { count: string; nonsfw: string };
     let params = req.params as { subreddit: string };
 
-    let subreddit = isNullish(params.subreddit) ? SUBREDDITS[randomInt(SUBREDDITS.length)] : params.subreddit;
+    let subreddit = isNullish(params.subreddit) ? SUBREDDITS[randomInt(SUBREDDITS.length)] : params.subreddit.toLowerCase();
     let count = Number(query.count);
     let nonsfw = query.nonsfw === "true" ? true : false;
 
@@ -22,7 +22,7 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
     }
 
     try {
-        let posts = JSON.parse(`${await redis.getBuffer(`${SUB_PREFIX}:${subreddit}`)}`) as Post[];
+        let posts = JSON.parse(`${await fastify.redis.getBuffer(`${SUB_PREFIX}${subreddit}`)}`) as Post[];
 
         if (isNullishOrEmpty(posts)) {
             let { posts: freshPosts, response } = await getPosts(subreddit, 100);
@@ -32,7 +32,7 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
             }
 
             freshPosts = onlyImagePosts(freshPosts);
-            await redis.setex(`${SUB_PREFIX}:${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
+            await fastify.redis.setex(`${SUB_PREFIX}${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
             posts = freshPosts;
         }
         posts = nonsfw ? Array.from(posts).filter((x) => !x.nsfw) : posts;

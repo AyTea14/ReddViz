@@ -1,14 +1,15 @@
 import "#lib/env";
-import rateLimit from "@fastify/rate-limit";
 import fastify from "fastify";
+import fastifyRedis from "@fastify/redis";
+import fastifyRateLimit from "@fastify/rate-limit";
 import { envParseInteger, envParseString } from "@skyra/env-utilities";
 import { Redis } from "ioredis";
-import { redis } from "#lib/redis";
 import { gimme, home } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#utils/functions";
 import { Logger } from "@skyra/logger";
 
 const PORT = envParseInteger("PORT", 8787);
+const redis = new Redis(envParseString("REDISCLOUD_URL"));
 export const logger = new Logger();
 
 const server = fastify({
@@ -17,13 +18,17 @@ const server = fastify({
     trustProxy: true,
 });
 
-redis.connect(() => logger.info(`connected to redis database`));
-await server.register(rateLimit, {
+export { server as fastify };
+
+await server.register(fastifyRedis, {
+    client: redis,
+});
+await server.register(fastifyRateLimit, {
     global: true,
     max: 45,
     timeWindow: "30s",
-    redis: new Redis(envParseString("REDISCLOUD_URL")),
-    nameSpace: "rateLimit:",
+    nameSpace: "rateLimit;",
+    redis,
 });
 
 server
