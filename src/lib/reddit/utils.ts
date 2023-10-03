@@ -26,7 +26,7 @@ export async function getToken() {
             method: "POST",
             body: new URLSearchParams({ grant_type: "client_credentials" }).toString(),
             headers: {
-                "user-agent": envParseString("USER_AGENT") ?? "ReddCull/0.0.1",
+                "user-agent": envParseString("USER_AGENT") ?? "ReddViz/0.0.1",
                 "content-type": "application/x-www-form-urlencoded",
                 authorization: `Basic ${encodedCredentials}`,
             },
