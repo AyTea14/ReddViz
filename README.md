@@ -1,10 +1,10 @@
-# ReddCull (Followed [D3vd/Meme_Api](https://github.com/D3vd/Meme_Api) code structures)
+# ReddViz (Followed [D3vd/Meme_Api](https://github.com/D3vd/Meme_Api) code structures)
 
 JSON API for a random posts scraped from reddit (image or gif only).
 
 *See [Specify Subreddit](#specify-subreddit) if you want to use another subreddit*
 
-API Link: [https://reddcull.ujol.dev/gimme](https://reddcull.ujol.dev/gimme)
+API Link: [https://reddviz.ujol.dev/gimme](https://reddviz.ujol.dev/gimme)
 
 **Example Response:**
 
@@ -37,9 +37,9 @@ API Link: [https://reddcull.ujol.dev/gimme](https://reddcull.ujol.dev/gimme)
 
 In order to get multiple posts in a single request specify the count with the following endpoint.
 
-Endpoint: [/gimme?count={count}](https://reddcull.ujol.dev/gimme?count=2)
+Endpoint: [/gimme?count={count}](https://reddviz.ujol.dev/gimme?count=2)
 
-Example: [https://reddcull.ujol.dev/gimme?count=2](https://reddcull.ujol.dev/gimme?count=2)
+Example: [https://reddviz.ujol.dev/gimme?count=2](https://reddviz.ujol.dev/gimme?count=2)
 
 Response:
 
@@ -98,9 +98,9 @@ Response:
 
 By default the API grabs a random post from this subreddits [list](src/utils/subreddits.js). To provide your own custom subreddit use the following endpoint.
 
-Endpoint: [/gimme/{subreddit}](https://reddcull.ujol.dev/gimme/animemes)
+Endpoint: [/gimme/{subreddit}](https://reddviz.ujol.dev/gimme/animemes)
 
-Example: [https://reddcull.ujol.dev/gimme/animemes](https://reddcull.ujol.dev/gimme/animemes)
+Example: [https://reddviz.ujol.dev/gimme/animemes](https://reddviz.ujol.dev/gimme/animemes)
 
 Response:
 
@@ -135,9 +135,9 @@ Response:
 
 In order to get a custom number of posts from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
 
-Endpoint: [/gimme/{subreddit}?count={count}](https://reddcull.ujol.dev/gimme/animemes?count=2)
+Endpoint: [/gimme/{subreddit}?count={count}](https://reddviz.ujol.dev/gimme/animemes?count=2)
 
-Example: [https://reddcull.ujol.dev/gimme/animemes?count=2](https://reddcull.ujol.dev/gimme/animemes?count=2)
+Example: [https://reddviz.ujol.dev/gimme/animemes?count=2](https://reddviz.ujol.dev/gimme/animemes?count=2)
 
 Response:
 
