@@ -55,6 +55,10 @@ export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, do
     } else done();
 }
 
+export function isObjectEmpty(obj: Record<string, any>) {
+    return Object.keys(obj).length === 0;
+}
+
 export const coloredMethod = (method: string): string => {
     let methods = ` ${method.padEnd(7)} `;
 

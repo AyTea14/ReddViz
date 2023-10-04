@@ -12,5 +12,8 @@ export interface Post {
     upvotes: number;
     comments: number;
     upvoteRatio: number;
-    preview: string[];
+    preview: {
+        images: string[];
+        gifs: string[];
+    };
 }

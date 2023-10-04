@@ -1,10 +1,11 @@
 import { ACCESS_TOKEN } from "#utils/constants";
-import { isNullish } from "@sapphire/utilities";
+import { Nullish, isNullish, isNullishOrEmpty } from "@sapphire/utilities";
 import { Post, Reddit, StatusCode } from "#types";
 import { decode } from "html-entities";
 import { getApiURL, getToken } from "./utils.js";
 import { makeRequest } from "./request.js";
 import { fastify } from "#root/index";
+import { isObjectEmpty } from "#utils/functions";
 
 export async function getPosts(subreddit: string, count: number) {
     const url = getApiURL(subreddit, count);
@@ -97,19 +98,40 @@ export async function getPosts(subreddit: string, count: number) {
             comments: post.num_comments,
             createdUtc: post.created_utc,
             upvoteRatio: post.upvote_ratio,
-            preview: getCleanPreviewImage(post),
+            preview: {
+                images: getCleanPreviewImages(post),
+                gifs: getClearPreviewGifs(post),
+            },
         });
     }
 
     return { posts, response: { code: StatusCode.Ok, message: "OK" } };
 }
 
-function getCleanPreviewImage(post: Reddit.PostDataElement): string[] {
+function getClearPreviewGifs(post: Reddit.PostDataElement) {
+    let links: string[] = [];
+    const preview = post.preview;
+
+    if (isNullish(preview)) return links;
+    else if (isNullishOrEmpty(preview.images)) return links;
+    else if (isObjectEmpty(preview.images[0].variants)) return links;
+
+    const gif = Reflect.get(preview.images[0].variants, "gif") as Omit<Reddit.Image, "id" | "variants"> | Nullish;
+
+    if (isNullish(gif)) return links;
+
+    for (let { url } of gif.resolutions) links.push(decode(url));
+    links.push(gif.source.url);
+
+    return links;
+}
+
+function getCleanPreviewImages(post: Reddit.PostDataElement): string[] {
     let links: string[] = [];
     const preview = post.preview;
 
     if (post && preview) {
-        if (preview && preview.images.length) {
+        if (!isNullishOrEmpty(preview.images)) {
             let images = preview.images;
             if (images.length !== 0 && images[0].resolutions.length !== 0) {
                 for (let image of images[0].resolutions) links.push(decode(image.url));
