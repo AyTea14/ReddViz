@@ -121,7 +121,7 @@ function getClearPreviewGifs(post: Reddit.PostDataElement) {
     if (isNullish(gif)) return links;
 
     for (let { url } of gif.resolutions) links.push(decode(url));
-    links.push(gif.source.url);
+    links.push(decode(gif.source.url));
 
     return links;
 }
@@ -130,17 +130,14 @@ function getCleanPreviewImages(post: Reddit.PostDataElement): string[] {
     let links: string[] = [];
     const preview = post.preview;
 
-    if (post && preview) {
-        if (!isNullishOrEmpty(preview.images)) {
-            let images = preview.images;
-            if (images.length !== 0 && images[0].resolutions.length !== 0) {
-                for (let image of images[0].resolutions) links.push(decode(image.url));
-                links.push(decode(images[0].source.url));
-            } else if (images.length !== 0 && images[0].resolutions.length === 0 && images[0].source)
-                links.push(decode(images[0].source.url));
-            else links.push(decode(post.url));
-        }
-    } else links.push(post.url);
+    if (isNullish(preview)) return links;
+    else if (isNullishOrEmpty(preview.images)) return links;
+    else if (isNullishOrEmpty(preview.images[0].resolutions)) return links;
+
+    let images = preview.images[0];
+
+    for (let image of images.resolutions) links.push(decode(image.url));
+    links.push(decode(images.source.url));
 
     return links;
 }

@@ -45,7 +45,7 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
         if (isNullishOrEmpty(posts))
             return reply.code(StatusCode.InternalServerError).send({
                 code: StatusCode.InternalServerError,
-                message: isNullish(params.subreddit) ? `r/${subreddit} has no Posts with Images` : "Error while getting posts",
+                message: isNullish(params.subreddit) ? "Error while getting posts" : `r/${subreddit} has no Posts with Images`,
             });
 
         if (!isNaN(count)) {
