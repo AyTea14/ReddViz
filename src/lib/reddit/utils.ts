@@ -4,18 +4,16 @@ import { ACCESS_TOKEN, TIMES } from "#utils/constants";
 import { envParseString } from "@skyra/env-utilities";
 import { randomInt } from "crypto";
 import { request } from "undici";
-import URI from "urijs";
 
 function encodeCredentials(): string {
     return btoa(`${envParseString("REDDIT_CLIENT_ID")}:${envParseString("REDDIT_CLIENT_SECRET")}`);
 }
 
 export function getApiURL(subreddit: string, limit: number): string {
-    let url = new URI(`r/${subreddit}/top`, `https://oauth.reddit.com/`)
-        .search({ limit: `${limit}`, t: TIMES[randomInt(TIMES.length)] })
-        .toString();
+    let url = new URL(`r/${subreddit}/top`, `https://oauth.reddit.com/`);
+    url.search = new URLSearchParams({ limit: `${limit}`, t: TIMES[randomInt(TIMES.length)] }).toString();
 
-    return url;
+    return url.toString();
 }
 
 export async function getToken() {

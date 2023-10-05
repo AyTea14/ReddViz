@@ -31,14 +31,12 @@
     "fastify": "^4.23.2",
     "html-entities": "^2.4.0",
     "pretty-ms": "^8.0.0",
-    "undici": "^5.25.3",
-    "urijs": "^1.19.11"
+    "undici": "^5.25.3"
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.4.10",
     "@sapphire/ts-config": "^5.0.0",
     "@types/node": "18",
-    "@types/urijs": "^1.19.20",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   }
