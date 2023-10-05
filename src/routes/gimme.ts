@@ -8,14 +8,14 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { fastify } from "#root/index";
 
 export async function gimme(req: FastifyRequest, reply: FastifyReply) {
-    let query = req.query as { count: string; nonsfw: string };
+    let query = req.query as { c: string; nonsfw: string };
     let params = req.params as { subreddit: string };
 
     let subreddit = isNullish(params.subreddit) ? SUBREDDITS[randomInt(SUBREDDITS.length)] : params.subreddit.toLowerCase();
-    let count = Number(query.count);
+    let count = Number(query.c);
     let nonsfw = query.nonsfw === "true" ? true : false;
 
-    if (!isNullish(query.count)) {
+    if (!isNullish(query.c)) {
         if (isNaN(count) || count <= 0)
             return reply.code(StatusCode.BadRequest).send({ code: StatusCode.BadRequest, message: "Invalid Count Value" });
         if (count > 50) count = 50;

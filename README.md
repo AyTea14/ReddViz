@@ -10,24 +10,29 @@ API Link: [https://reddviz.ujol.dev/gimme](https://reddviz.ujol.dev/gimme)
 
 ```jsonc
 {
-    "id": "v446ic",
-    "title": "Let the good times roll",
-    "subreddit": "wholesomememes",
-    "author": "faroll2",
-    "postLink": "https://www.reddit.com/r/wholesomememes/comments/v446ic/let_the_good_times_roll/",
-    "thumbnail": "https://b.thumbs.redditmedia.com/DmkrEy1oEsXGJDI19nEKsibw8Oy8jC27Ys83Kple-AQ.jpg",
-    "image": "https://i.redd.it/oc6o118yvf391.gif",
+    "id": "11upqnv",
+    "title": "Sign me up",
+    "subreddit": "Memes_Of_The_Dank",
+    "author": "CopherBarry814",
+    "postLink": "https://www.reddit.com/r/Memes_Of_The_Dank/comments/11upqnv/sign_me_up/",
+    "thumbnail": "https://b.thumbs.redditmedia.com/FzZUKQLtF38NKzDZ5Z-XlMQS2h8CY6VnIMJBtvYr0bA.jpg",
+    "image": "https://i.redd.it/h31i7oh3bioa1.jpg",
     "nsfw": false,
     "spoiler": false,
-    "upvotes": 413,
-    "comments": 8,
-    "createdUtc": 1654276538,
-    "upvoteRatio": 0.98,
-    "preview": [
-        "https://preview.redd.it/oc6o118yvf391.gif?width=108&crop=smart&format=png8&s=77ae6046e6a64aee6f91fe1733c4ccfbaaae1e59",
-        "https://preview.redd.it/oc6o118yvf391.gif?width=216&crop=smart&format=png8&s=4d98a6e1aaca802277680e90cc2fc92f5554335b",
-        "https://preview.redd.it/oc6o118yvf391.gif?width=320&crop=smart&format=png8&s=05201b164498027daba6ca95d0e02b4936c194ed"
-    ]
+    "upvotes": 7343,
+    "comments": 91,
+    "createdUtc": 1679149183,
+    "upvoteRatio": 0.97,
+    "preview": {
+        "images": [
+            "https://preview.redd.it/h31i7oh3bioa1.jpg?width=108&crop=smart&auto=webp&s=742370c0d2b737de75004246b94dff383b265b02",
+            "https://preview.redd.it/h31i7oh3bioa1.jpg?width=216&crop=smart&auto=webp&s=9f875ed650fbaef2265a4c070c23adc34335f898",
+            "https://preview.redd.it/h31i7oh3bioa1.jpg?width=320&crop=smart&auto=webp&s=e80a6e1f1cfd6cd013dd26f0ea3a697837cb4b80",
+            "https://preview.redd.it/h31i7oh3bioa1.jpg?width=640&crop=smart&auto=webp&s=61770500293c74d3d38e4c082df2b9360ac2839e",
+            "https://preview.redd.it/h31i7oh3bioa1.jpg?auto=webp&s=ed64fe51a559f155c08e0efa031d22f30bea0a6e"
+        ],
+        "gifs": []
+    }
 }
 ```
 
@@ -37,60 +42,67 @@ API Link: [https://reddviz.ujol.dev/gimme](https://reddviz.ujol.dev/gimme)
 
 In order to get multiple posts in a single request specify the count with the following endpoint.
 
-Endpoint: [/gimme?count={count}](https://reddviz.ujol.dev/gimme?count=2)
+Endpoint: [/gimme?c={count}](https://reddviz.ujol.dev/gimme?c=2)
 
-Example: [https://reddviz.ujol.dev/gimme?count=2](https://reddviz.ujol.dev/gimme?count=2)
+Example: [https://reddviz.ujol.dev/gimme?c=2](https://reddviz.ujol.dev/gimme?c=2)
 
 Response:
 
 ```jsonc
 {
-   "count": 2,
-   "memes": [
-      {
-         "id": "zv0p4c",
-         "title": "I have lived ten of your lifetimes, boy",
-         "subreddit": "dankmemes",
-         "author": "Cell_Medium",
-         "postLink": "https://www.reddit.com/r/dankmemes/comments/zv0p4c/i_have_lived_ten_of_your_lifetimes_boy/",
-         "thumbnail": "https://b.thumbs.redditmedia.com/gW02xffe6djEJtKfip-RgQ5qlH0zqx0tLe8WYK7dQws.jpg",
-         "image": "https://i.redd.it/tgeb0i4sy38a1.jpg",
-         "nsfw": false,
-         "spoiler": false,
-         "upvotes": 222,
-         "comments": 11,
-         "createdUtc": 1671983992,
-         "upvoteRatio": 0.92,
-         "preview": [
-            "https://preview.redd.it/tgeb0i4sy38a1.jpg?width=108&crop=smart&auto=webp&s=ac187090f26b9d6e0e2fcfd45cd9e4501b11a755",
-            "https://preview.redd.it/tgeb0i4sy38a1.jpg?width=216&crop=smart&auto=webp&s=2304731b86d0e8c29cb640af2eeefa30639325ae",
-            "https://preview.redd.it/tgeb0i4sy38a1.jpg?width=320&crop=smart&auto=webp&s=800e1cc9dd70396772d6a4c4c93322b3268a97a2",
-            "https://preview.redd.it/tgeb0i4sy38a1.jpg?width=640&crop=smart&auto=webp&s=86d9292085e3d5639c14a687d2a79b76a77b56e1",
-            "https://preview.redd.it/tgeb0i4sy38a1.jpg?auto=webp&s=598d765b768dcab81e182a4e2b89067e0ba07d18"
-         ]
-      },
-      {
-         "id": "zvm1cp",
-         "title": "Offers “shoulder” to cry on",
-         "subreddit": "dankmemes",
-         "author": "RegularNoodles",
-         "postLink": "https://www.reddit.com/r/dankmemes/comments/zvm1cp/offers_shoulder_to_cry_on/",
-         "thumbnail": "https://b.thumbs.redditmedia.com/GNR7cehWAS5u1we-Em1-aMelBvrUpUNnLNW35WA0XMs.jpg",
-         "image": "https://i.redd.it/nb0t25t60a8a1.gif",
-         "nsfw": false,
-         "spoiler": false,
-         "upvotes": 144,
-         "comments": 4,
-         "createdUtc": 1672057119,
-         "upvoteRatio": 0.98,
-         "preview": [
-            "https://preview.redd.it/nb0t25t60a8a1.gif?width=108&crop=smart&format=png8&s=b001b5820e4166ad7bf163e7948ccabf8e6d2bfa",
-            "https://preview.redd.it/nb0t25t60a8a1.gif?width=216&crop=smart&format=png8&s=a5bb3fef81e3723941da607f5ec397171d0d877f",
-            "https://preview.redd.it/nb0t25t60a8a1.gif?width=320&crop=smart&format=png8&s=35663864554a56c715b397042d266a49cca79b2b",
-            "https://preview.redd.it/nb0t25t60a8a1.gif?format=png8&s=4b14c6b4749cae05051c311259bc4da5c7e4673e"
-         ]
-      }
-   ]
+    "count": 2,
+    "posts": [
+        {
+            "id": "16y5ftq",
+            "title": "I guess it has something to do with water",
+            "subreddit": "Animemes",
+            "author": "Koleksiyoncu_999999",
+            "postLink": "https://www.reddit.com/r/Animemes/comments/16y5ftq/i_guess_it_has_something_to_do_with_water/",
+            "thumbnail": "https://b.thumbs.redditmedia.com/Ka_cQG0IQViXxiBJ9FKcH3MEqKGQ-PN6p-jETJQAThA.jpg",
+            "image": "https://i.redd.it/v8gypenl9urb1.jpg",
+            "nsfw": false,
+            "spoiler": false,
+            "upvotes": 2888,
+            "comments": 13,
+            "createdUtc": 1696274035,
+            "upvoteRatio": 1,
+            "preview": {
+                "images": [
+                    "https://preview.redd.it/v8gypenl9urb1.jpg?width=108&crop=smart&auto=webp&s=c8ae614331974f83fae8095830a3279bcefe14fa",
+                    "https://preview.redd.it/v8gypenl9urb1.jpg?width=216&crop=smart&auto=webp&s=f547e9290e4eb4000643bbbea910718d3c8bf4bd",
+                    "https://preview.redd.it/v8gypenl9urb1.jpg?width=320&crop=smart&auto=webp&s=fbb7c6b138f505579dbf33c4ca040a1f73a6d572",
+                    "https://preview.redd.it/v8gypenl9urb1.jpg?width=640&crop=smart&auto=webp&s=1429080d0075bcbea6d75c120479ddbeea906b30",
+                    "https://preview.redd.it/v8gypenl9urb1.jpg?auto=webp&s=64308bcbac79f7fabc1e885d2b9f63156830cfd5"
+                ],
+                "gifs": []
+            }
+        },
+        {
+            "id": "16xeows",
+            "title": "What? No way...",
+            "subreddit": "Animemes",
+            "author": "Holofan4life",
+            "postLink": "https://www.reddit.com/r/Animemes/comments/16xeows/what_no_way/",
+            "thumbnail": "https://b.thumbs.redditmedia.com/2UYEWxNS7y_Kl8whbZjKzaNdm0InivKk5NI-vCuqddA.jpg",
+            "image": "https://i.redd.it/cvh7fqdz0orb1.jpg",
+            "nsfw": false,
+            "spoiler": false,
+            "upvotes": 897,
+            "comments": 14,
+            "createdUtc": 1696198494,
+            "upvoteRatio": 0.99,
+            "preview": {
+                "images": [
+                    "https://preview.redd.it/cvh7fqdz0orb1.jpg?width=108&crop=smart&auto=webp&s=a96e9dfb5aa58fb0700f108802ba04b64301590b",
+                    "https://preview.redd.it/cvh7fqdz0orb1.jpg?width=216&crop=smart&auto=webp&s=bf6472668beee92fab9133c00ba5f0b3eaec6614",
+                    "https://preview.redd.it/cvh7fqdz0orb1.jpg?width=320&crop=smart&auto=webp&s=cc038f751b1f558444025702cc643032cace315c",
+                    "https://preview.redd.it/cvh7fqdz0orb1.jpg?width=640&crop=smart&auto=webp&s=bdd6c8c6afe0dce01930ab1357c56a5b20101c89",
+                    "https://preview.redd.it/cvh7fqdz0orb1.jpg?auto=webp&s=87a765d62de68cf4e15599755d195e3e58f0d6ee"
+                ],
+                "gifs": []
+            }
+        }
+    ]
 }
 ```
 
@@ -106,28 +118,31 @@ Response:
 
 ```json
 {
-   "id": "zf888a",
-   "title": "Who thought it was a good idea to censor blood in... white?",
-   "subreddit": "Animemes",
-   "author": "Lorette_Lorena",
-   "postLink": "https://www.reddit.com/r/Animemes/comments/zf888a/who_thought_it_was_a_good_idea_to_censor_blood_in/",
-   "thumbnail": "https://a.thumbs.redditmedia.com/Cz24XQINRREiYENtvxN0fD0DgvmNgeQuoAsXI0iD1X4.jpg",
-   "image": "https://i.redd.it/gvxf4tfnli4a1.jpg",
-   "nsfw": false,
-   "spoiler": false,
-   "upvotes": 6486,
-   "comments": 201,
-   "createdUtc": 1670435788,
-   "upvoteRatio": 0.96,
-   "preview": [
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=108&crop=smart&auto=webp&s=c2ba344656d41edfd94473a34cacfef46f792b60",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=216&crop=smart&auto=webp&s=0c52cfbdc47cb37bcb1716c97def361200faade7",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=320&crop=smart&auto=webp&s=9fd0df93a15fb393d9d07fc5dc92723b9bab16d9",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=640&crop=smart&auto=webp&s=066a67a85b86e58b73747f3d61e2317da543d80a",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=960&crop=smart&auto=webp&s=8e4b8bca470626bb9d729a4e0e5f7af48f450851",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?width=1080&crop=smart&auto=webp&s=c46d36ebc623c7b11202337fda43b88cc2ba4d9d",
-      "https://preview.redd.it/gvxf4tfnli4a1.jpg?auto=webp&s=e9f40e84ac08797ec8216b39fe11583930082f7f"
-   ]
+    "id": "16uopbe",
+    "title": "It’s immeasurable",
+    "subreddit": "Animemes",
+    "author": "Rail_House_Jam",
+    "postLink": "https://www.reddit.com/r/Animemes/comments/16uopbe/its_immeasurable/",
+    "thumbnail": "https://b.thumbs.redditmedia.com/Gf9CAuzvQv4C3hLwvqN2ntaZCFr7_aXkzvsqoulVa-k.jpg",
+    "image": "https://i.redd.it/abkntjnup1rb1.jpg",
+    "nsfw": false,
+    "spoiler": false,
+    "upvotes": 3189,
+    "comments": 62,
+    "createdUtc": 1695928404,
+    "upvoteRatio": 0.98,
+    "preview": {
+        "images": [
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=108&crop=smart&auto=webp&s=6f59dc8981fc3c3d7167f65bb28b3e8b22dd85a1",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=216&crop=smart&auto=webp&s=497245488455f43e2633d22437410dd2b041cf5b",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=320&crop=smart&auto=webp&s=cac38fb075fa0882eadf166f812e91d4de01e6a2",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=640&crop=smart&auto=webp&s=5ccd7c315601cfdc823ddd51e7721dd23afb840b",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=960&crop=smart&auto=webp&s=5f2c9068efdde84656dd74070376ddfedbafdd71",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?width=1080&crop=smart&auto=webp&s=2c160137b914dd498ac6260f54a7a224a6109952",
+            "https://preview.redd.it/abkntjnup1rb1.jpg?auto=webp&s=a19b3afa71575bc31524de457113e83cb74e957d"
+        ],
+        "gifs": []
+    }
 }
 ```
 
@@ -135,63 +150,68 @@ Response:
 
 In order to get a custom number of posts from a specific subreddit provide the name of the subreddit and the count in the following endpoint.
 
-Endpoint: [/gimme/{subreddit}?count={count}](https://reddviz.ujol.dev/gimme/animemes?count=2)
+Endpoint: [/gimme/{subreddit}?c={count}](https://reddviz.ujol.dev/gimme/animemes?c=2)
 
-Example: [https://reddviz.ujol.dev/gimme/animemes?count=2](https://reddviz.ujol.dev/gimme/animemes?count=2)
+Example: [https://reddviz.ujol.dev/gimme/animemes?c=2](https://reddviz.ujol.dev/gimme/animemes?c=2)
 
 Response:
 
 ```json
 {
-   "count": 2,
-   "memes": [
-      {
-         "id": "zea6vo",
-         "title": "I double dare you MF",
-         "subreddit": "Animemes",
-         "author": "Fulltime_Introvert",
-         "postLink": "https://www.reddit.com/r/Animemes/comments/zea6vo/i_double_dare_you_mf/",
-         "thumbnail": "https://b.thumbs.redditmedia.com/xmDaTYVSobl6vD1MDT_xBG1OPAIRdMK6GCc7NKNaRKw.jpg",
-         "image": "https://i.redd.it/6fgp9962va4a1.jpg",
-         "nsfw": false,
-         "spoiler": false,
-         "upvotes": 6992,
-         "comments": 149,
-         "createdUtc": 1670342088,
-         "upvoteRatio": 0.98,
-         "preview": [
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=108&crop=smart&auto=webp&s=0515d0089d4f699f8121cfb85b9d656440897cac",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=216&crop=smart&auto=webp&s=efed82771889ba9a3ca13ef45e064ba8182ba938",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=320&crop=smart&auto=webp&s=0ba2d907bad6a822394ac0b431816385503c26b6",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=640&crop=smart&auto=webp&s=96e49668e759e884b0ae5a5c1c6e58db281d59b0",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=960&crop=smart&auto=webp&s=ec669977be1ea66de673302363ab9952f84a5202",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?width=1080&crop=smart&auto=webp&s=7dbceea0fb69e8e392ec2b391a7a018a92ce8070",
-            "https://preview.redd.it/6fgp9962va4a1.jpg?auto=webp&s=961ef1678a5bfe614caf32a89af48e94955d30af"
-         ]
-      },
-      {
-         "id": "zuavgl",
-         "title": "You can't escape the pain",
-         "subreddit": "Animemes",
-         "author": "GABESTFY",
-         "postLink": "https://www.reddit.com/r/Animemes/comments/zuavgl/you_cant_escape_the_pain/",
-         "thumbnail": "https://b.thumbs.redditmedia.com/IoRpNwryhTadS64jkUlhMIAOdH95Ts2j6FuHRO_h3uU.jpg",
-         "image": "https://i.redd.it/6jiwc1itvu7a1.jpg",
-         "nsfw": false,
-         "spoiler": false,
-         "upvotes": 12484,
-         "comments": 149,
-         "createdUtc": 1671892022,
-         "upvoteRatio": 0.97,
-         "preview": [
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?width=108&crop=smart&auto=webp&s=37de438e940dbaf301edf8c321ac2ec1c81f7cb1",
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?width=216&crop=smart&auto=webp&s=5c93efd723a64f670831f1fb3927c23ca24c6b02",
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?width=320&crop=smart&auto=webp&s=36f023fe6aed0685bd1d157685ac94089c3696d3",
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?width=640&crop=smart&auto=webp&s=cd0d6fe8a81369fbaf87c35b8e53af092beef85e",
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?width=960&crop=smart&auto=webp&s=655b4d628a9c2e6754f344a91697cc9d0472abdb",
-            "https://preview.redd.it/6jiwc1itvu7a1.jpg?auto=webp&s=2760e4b09479978baa8f94f75a9acf246c43fae8"
-         ]
-      }
-   ]
+    "count": 2,
+    "posts": [
+        {
+            "id": "1708p2m",
+            "title": "Anime: Age, what's that ?",
+            "subreddit": "Animemes",
+            "author": "skj_subith_2903",
+            "postLink": "https://www.reddit.com/r/Animemes/comments/1708p2m/anime_age_whats_that/",
+            "thumbnail": "https://b.thumbs.redditmedia.com/WXKagxA9_j44nkwW6-7BEeVk50--aaj9OnpvUC2nRaQ.jpg",
+            "image": "https://i.redd.it/2yamztzjabsb1.jpg",
+            "nsfw": false,
+            "spoiler": false,
+            "upvotes": 1242,
+            "comments": 60,
+            "createdUtc": 1696480176,
+            "upvoteRatio": 0.97,
+            "preview": {
+                "images": [
+                    "https://preview.redd.it/2yamztzjabsb1.jpg?width=108&crop=smart&auto=webp&s=badadc7824c8994401b5839329a94767111de7d8",
+                    "https://preview.redd.it/2yamztzjabsb1.jpg?width=216&crop=smart&auto=webp&s=0871b41e09fcfae0d7c9bfe87414cf9a5bbb3648",
+                    "https://preview.redd.it/2yamztzjabsb1.jpg?width=320&crop=smart&auto=webp&s=e98f4d971d61eb30d85b45c9c61f7eb74febfbfb",
+                    "https://preview.redd.it/2yamztzjabsb1.jpg?width=640&crop=smart&auto=webp&s=f2732324d6b3327ee856f410620b4ab255114df0",
+                    "https://preview.redd.it/2yamztzjabsb1.jpg?auto=webp&s=3b37c7adaf3cc4d7714dfce2736d608eca24e6d7"
+                ],
+                "gifs": []
+            }
+        },
+        {
+            "id": "16vbrpn",
+            "title": "You're not only cheating the game, you're cheating yourself",
+            "subreddit": "Animemes",
+            "author": "MNicolas97",
+            "postLink": "https://www.reddit.com/r/Animemes/comments/16vbrpn/youre_not_only_cheating_the_game_youre_cheating/",
+            "thumbnail": "https://a.thumbs.redditmedia.com/ptMz2Ql3kLrTAAyvtihpnE3Gs8MXy0guzP7PgX1CEy0.jpg",
+            "image": "https://i.redd.it/ecocm2nv57rb1.jpg",
+            "nsfw": false,
+            "spoiler": false,
+            "upvotes": 441,
+            "comments": 15,
+            "createdUtc": 1695994325,
+            "upvoteRatio": 0.97,
+            "preview": {
+                "images": [
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=108&crop=smart&auto=webp&s=f37e359025ef11260b6ce2e1f68cc8b9c740fe95",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=216&crop=smart&auto=webp&s=17c9493057e78a2b3c3a11346f48ef38543a4d18",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=320&crop=smart&auto=webp&s=79ad188d356c87b8cf9b09c6a756d3f02498870c",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=640&crop=smart&auto=webp&s=375e4ef9046e8ed3ffc56a6bfecd867938d6bd21",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=960&crop=smart&auto=webp&s=9b2010a8559d11d8700ea6eb35ead8346d8c25e0",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?width=1080&crop=smart&auto=webp&s=7d5c09daba9a842c203c45b18a305210952f43ea",
+                    "https://preview.redd.it/ecocm2nv57rb1.jpg?auto=webp&s=4dda77d73b8ef45637670013e35a63f26178151e"
+                ],
+                "gifs": []
+            }
+        }
+    ]
 }
 ```
