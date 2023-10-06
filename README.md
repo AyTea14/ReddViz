@@ -108,7 +108,7 @@ Response:
 
 ### Specify Subreddit
 
-By default the API grabs a random post from this subreddits [list](src/utils/subreddits.js). To provide your own custom subreddit use the following endpoint.
+By default the API grabs a random post from this subreddits [list](src/utils/constants.ts). To provide your own custom subreddit use the following endpoint.
 
 Endpoint: [/gimme/{subreddit}](https://reddviz.ujol.dev/gimme/animemes)
 

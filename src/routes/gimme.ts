@@ -7,13 +7,18 @@ import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { fastify } from "#root/index";
 
-export async function gimme(req: FastifyRequest, reply: FastifyReply) {
-    let query = req.query as { c: string; nonsfw: string };
-    let params = req.params as { subreddit: string };
+export async function gimme(
+    req: FastifyRequest<{
+        Querystring: { c: string; nonsfw: string };
+        Params: { subreddit: string };
+    }>,
+    reply: FastifyReply
+) {
+    let { query, params } = req;
 
     let subreddit = isNullish(params.subreddit) ? SUBREDDITS[randomInt(SUBREDDITS.length)] : params.subreddit.toLowerCase();
     let count = Number(query.c);
-    let nonsfw = query.nonsfw === "true" ? true : false;
+    let nonsfw = Reflect.has(query, "nonsfw");
 
     if (!isNullish(query.c)) {
         if (isNaN(count) || count <= 0)
@@ -35,16 +40,16 @@ export async function gimme(req: FastifyRequest, reply: FastifyReply) {
             await fastify.redis.setex(`${SUB_PREFIX}${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
             posts = freshPosts;
         }
-        posts = nonsfw ? Array.from(posts).filter((x) => !x.nsfw) : posts;
+        posts = nonsfw ? posts.filter((x) => !x.nsfw) : posts;
 
         if (nonsfw && isNullishOrEmpty(posts) && posts.every((x) => x.nsfw))
-            return reply.code(StatusCode.ServiceUnavailable).send({
-                code: StatusCode.ServiceUnavailable,
+            return reply.code(StatusCode.Forbidden).send({
+                code: StatusCode.Forbidden,
                 message: `r/${subreddit} only has NSFW Posts`,
             });
         if (isNullishOrEmpty(posts))
-            return reply.code(StatusCode.InternalServerError).send({
-                code: StatusCode.InternalServerError,
+            return reply.code(StatusCode.NotFound).send({
+                code: StatusCode.NotFound,
                 message: isNullish(params.subreddit) ? "Error while getting posts" : `r/${subreddit} has no Posts with Images`,
             });
 

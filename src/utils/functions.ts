@@ -79,11 +79,11 @@ export const coloredStatusCode = (statusCode: number): string => {
     else return bgRed(whiteBright(`${statusCodes}`));
 };
 
-export const reqLogger = async (req: FastifyRequest, reply: FastifyReply) => {
+export const reqLogger = (req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => {
     let latency = prettyMs(reply.getResponseTime(), { secondsDecimalDigits: 7, millisecondsDecimalDigits: 4 }).padStart(13);
     let clientIp = String(req.ip).padStart(15);
     let statusCode = coloredStatusCode(reply.statusCode);
     let method = coloredMethod(req.method);
     logger.info(`${statusCode} | ${latency} | ${clientIp} | ${method} "${req.url}"`);
-    return;
+    done();
 };
