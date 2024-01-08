@@ -1,25 +1,25 @@
-import { Post } from "#types";
+import { Post, StatusCode } from "#types";
 import { bgBlue, bgCyan, bgGreen, bgMagenta, bgRed, bgWhite, bgYellow, black, whiteBright } from "colorette";
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { extname } from "path";
 import { logger } from "#root/index";
+import { isNullish } from "@sapphire/utilities";
 import prettyMs from "pretty-ms";
 
 export function onlyImagePosts(posts: Post[] | null) {
     let imagePosts: Post[] = [];
-    if (Array.isArray(posts)) {
-        for (let post of posts) {
-            let url = post.image;
-            try {
-                let ext = extname(new URL(url).pathname);
-                if (
-                    ![".gifv"].includes(ext) &&
-                    [".jpg", ".png", ".gif", ".jpeg"].includes(ext) //
-                )
-                    imagePosts.push(post);
-            } catch (error) {}
-        }
+    if (isNullish(posts)) return imagePosts;
+
+    for (let post of posts) {
+        let url = post.image;
+        let ext = extname(new URL(url).pathname);
+        if (
+            ![".gifv"].includes(ext) &&
+            [".jpg", ".png", ".gif", ".jpeg"].includes(ext) //
+        )
+            imagePosts.push(post);
     }
+
     return imagePosts;
 }
 
@@ -51,7 +51,7 @@ export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, do
     const url = new URL(`${req.url}`, `${req.protocol}://${req.hostname}`);
     if (url.pathname.slice(-1) === "/" && url.pathname.length > 1) {
         let path = url.pathname.slice(0, -1) + url.search;
-        reply.redirect(301, path);
+        reply.redirect(StatusCode.MovedPermanently, path);
     } else done();
 }
 
