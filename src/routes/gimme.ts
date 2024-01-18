@@ -6,6 +6,7 @@ import { isNullish, isNullishOrEmpty } from "@sapphire/utilities";
 import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { fastify } from "#root/index";
+import { destr } from "destr";
 
 export async function gimme(
     req: FastifyRequest<{
@@ -27,7 +28,8 @@ export async function gimme(
     }
 
     try {
-        let posts = JSON.parse(`${await fastify.redis.getBuffer(`${SUB_PREFIX}${subreddit}`)}`) as Post[];
+        let buffer = await fastify.redis.getBuffer(`${SUB_PREFIX}${subreddit}`);
+        let posts = isNullish(buffer) ? null : destr<Post[]>(buffer.toString());
 
         if (isNullishOrEmpty(posts)) {
             let { posts: freshPosts, response } = await getPosts(subreddit, 100);
@@ -60,6 +62,7 @@ export async function gimme(
         }
 
         let post = posts[randomInt(posts.length)];
+        await fastify.redis.incr("count");
         return reply.code(StatusCode.Ok).send(post);
     } catch (error: any) {
         return reply
