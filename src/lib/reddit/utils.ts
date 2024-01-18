@@ -1,6 +1,6 @@
 import { fastify } from "#root/index";
 import { AccessTokenBody } from "#types";
-import { ACCESS_TOKEN, TIMES } from "#utils/constants";
+import { ACCESS_TOKEN_KEY, TIMES } from "#utils/constants";
 import { envParseString } from "@skyra/env-utilities";
 import { randomInt } from "crypto";
 import { request } from "undici";
@@ -32,7 +32,7 @@ export async function getToken() {
         });
         const data = (await res.body.json()) as AccessTokenBody;
 
-        fastify.redis.setex(ACCESS_TOKEN, data.expires_in, data.access_token);
+        fastify.redis.setex(ACCESS_TOKEN_KEY, data.expires_in, data.access_token);
 
         return data.access_token;
     } catch (error) {

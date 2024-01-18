@@ -7,6 +7,7 @@ import { Redis } from "ioredis";
 import { gimme, home, stats } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#utils/functions";
 import { Logger } from "@skyra/logger";
+import { updateStats } from "#utils/stats";
 
 const PORT = envParseInteger("PORT", 8787);
 const redis = new Redis(envParseString("REDISCLOUD_URL"));
@@ -32,7 +33,11 @@ await server.register(fastifyRateLimit, {
 server
     .get("/", home) //
     .get("/stats", stats)
-    .get("/gimme/:subreddit?", gimme);
+    .get(
+        "/gimme/:subreddit?", //
+        { onRequest: () => updateStats() },
+        gimme
+    );
 
 server
     .addHook("preHandler", removeTrailingSlash)

@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN } from "#utils/constants";
+import { ACCESS_TOKEN_KEY } from "#utils/constants";
 import { Nullish, isNullish, isNullishOrEmpty } from "@sapphire/utilities";
 import { Post, Reddit, StatusCode } from "#types";
 import { decode } from "html-entities";
@@ -10,7 +10,7 @@ import { isObjectEmpty } from "#utils/functions";
 export async function getPosts(subreddit: string, count: number) {
     const url = getApiURL(subreddit, count);
 
-    let cachedToken = await fastify.redis.get(ACCESS_TOKEN);
+    let cachedToken = await fastify.redis.get(ACCESS_TOKEN_KEY);
     let token = isNullish(cachedToken) ? await getToken() : cachedToken;
 
     let { body, statusCode } = await makeRequest(url, token);

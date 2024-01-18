@@ -1,6 +1,6 @@
 import { getPosts } from "#lib/reddit";
 import { Post, StatusCode } from "#types";
-import { SUBREDDITS, SUB_EXPIRE, SUB_PREFIX } from "#utils/constants";
+import { SUBREDDITS, SUB_EXPIRE, SUB_PREFIX_KEY } from "#utils/constants";
 import { getNGimme, onlyImagePosts } from "#utils/functions";
 import { isNullish, isNullishOrEmpty } from "@sapphire/utilities";
 import { randomInt } from "crypto";
@@ -28,7 +28,7 @@ export async function gimme(
     }
 
     try {
-        let buffer = await fastify.redis.getBuffer(`${SUB_PREFIX}${subreddit}`);
+        let buffer = await fastify.redis.getBuffer(`${SUB_PREFIX_KEY}${subreddit}`);
         let posts = isNullish(buffer) ? null : destr<Post[]>(buffer.toString());
 
         if (isNullishOrEmpty(posts)) {
@@ -39,7 +39,7 @@ export async function gimme(
             }
 
             freshPosts = onlyImagePosts(freshPosts);
-            await fastify.redis.setex(`${SUB_PREFIX}${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
+            await fastify.redis.setex(`${SUB_PREFIX_KEY}${subreddit}`, SUB_EXPIRE, JSON.stringify(freshPosts));
             posts = freshPosts;
         }
         posts = nonsfw ? posts.filter((x) => !x.nsfw) : posts;

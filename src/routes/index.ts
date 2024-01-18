@@ -1,4 +1,6 @@
 import { fastify } from "#root/index";
+import { TOTAL_REQUEST_KEY } from "#utils/constants";
+import { getStatsWithPrefix } from "#utils/stats";
 import { isNullish } from "@sapphire/utilities";
 import { FastifyReply, FastifyRequest } from "fastify";
 
@@ -9,9 +11,15 @@ export function home(_: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function stats(_: FastifyRequest, reply: FastifyReply) {
-    const count = await fastify.redis.get("count");
+    const total = await fastify.redis.get(`${TOTAL_REQUEST_KEY}total`);
+
+    const daily = await getStatsWithPrefix(`${TOTAL_REQUEST_KEY}daily;`);
+    const monthly = await getStatsWithPrefix(`${TOTAL_REQUEST_KEY}monthly;`);
+
     return reply.send({
-        count: isNullish(count) ? 0 : Number(count),
+        total: isNullish(total) ? 0 : Number(total),
+        daily,
+        monthly,
     });
 }
 
