@@ -1,12 +1,12 @@
 import "#lib/env";
 import { gimme, home, stats } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#utils/functions";
-import fastifyRateLimit from "@fastify/rate-limit";
-import fastifyRedis from "@fastify/redis";
 import { envParseInteger, envParseString } from "@skyra/env-utilities";
 import { Logger } from "@skyra/logger";
-import fastify from "fastify";
 import { Redis } from "ioredis";
+import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyRedis from "@fastify/redis";
+import fastify from "fastify";
 
 const PORT = envParseInteger("PORT", 8787);
 const redis = new Redis(envParseString("REDISCLOUD_URL"));
