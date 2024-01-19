@@ -7,6 +7,7 @@ import { randomInt } from "crypto";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { fastify } from "#root/index";
 import { destr } from "destr";
+import { updateStats } from "#utils/stats";
 
 export async function gimme(
     req: FastifyRequest<{
@@ -62,7 +63,7 @@ export async function gimme(
         }
 
         let post = posts[randomInt(posts.length)];
-        await fastify.redis.incr("count");
+        await updateStats();
         return reply.code(StatusCode.Ok).send(post);
     } catch (error: any) {
         return reply

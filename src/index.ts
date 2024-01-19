@@ -1,13 +1,12 @@
 import "#lib/env";
-import fastify from "fastify";
-import fastifyRedis from "@fastify/redis";
-import fastifyRateLimit from "@fastify/rate-limit";
-import { envParseInteger, envParseString } from "@skyra/env-utilities";
-import { Redis } from "ioredis";
 import { gimme, home, stats } from "#routes";
 import { removeTrailingSlash, reqLogger } from "#utils/functions";
+import fastifyRateLimit from "@fastify/rate-limit";
+import fastifyRedis from "@fastify/redis";
+import { envParseInteger, envParseString } from "@skyra/env-utilities";
 import { Logger } from "@skyra/logger";
-import { updateStats } from "#utils/stats";
+import fastify from "fastify";
+import { Redis } from "ioredis";
 
 const PORT = envParseInteger("PORT", 8787);
 const redis = new Redis(envParseString("REDISCLOUD_URL"));
@@ -33,11 +32,7 @@ await server.register(fastifyRateLimit, {
 server
     .get("/", home) //
     .get("/stats", stats)
-    .get(
-        "/gimme/:subreddit?", //
-        { onRequest: () => updateStats() },
-        gimme
-    );
+    .get("/gimme/:subreddit?", gimme);
 
 server
     .addHook("preHandler", removeTrailingSlash)
