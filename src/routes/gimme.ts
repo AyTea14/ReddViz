@@ -11,7 +11,7 @@ import { updateStats } from "#utils/stats";
 
 export async function gimme(
     req: FastifyRequest<{
-        Querystring: { c: string; nonsfw: string };
+        Querystring: { c: string; count: string; nonsfw: string };
         Params: { subreddit: string };
     }>,
     reply: FastifyReply
@@ -19,10 +19,10 @@ export async function gimme(
     let { query, params } = req;
 
     let subreddit = isNullish(params.subreddit) ? SUBREDDITS[randomInt(SUBREDDITS.length)] : params.subreddit.toLowerCase();
-    let count = Number(query.c);
+    let count = Number(query.c || query.count);
     let nonsfw = Reflect.has(query, "nonsfw");
 
-    if (!isNullish(query.c)) {
+    if (!isNullish(query.c) || !isNullish(query.count)) {
         if (isNaN(count) || count <= 0)
             return reply.code(StatusCode.BadRequest).send({ code: StatusCode.BadRequest, message: "Invalid Count Value" });
         if (count > 50) count = 50;
