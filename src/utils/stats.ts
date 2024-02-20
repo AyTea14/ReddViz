@@ -15,7 +15,7 @@ export async function getStatsWithPrefix(prefix: string) {
     const keys = await fastify.redis.keys(`${prefix}*`);
     const stats: Record<string, any> = {};
 
-    for (const key of keys.sort()) {
+    for (const key of keys.sort().reverse()) {
         const value = await fastify.redis.get(key);
         const date = key.substring(prefix.length);
 
