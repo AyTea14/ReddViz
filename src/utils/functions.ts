@@ -50,8 +50,8 @@ export function getNGimme<T>(arr: Array<T>, picks: number): Array<T> {
 export function removeTrailingSlash(req: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) {
     const url = new URL(`${req.url}`, `${req.protocol}://${req.hostname}`);
     if (url.pathname.slice(-1) === "/" && url.pathname.length > 1) {
-        let path = url.pathname.slice(0, -1) + url.search;
-        reply.redirect(StatusCode.MovedPermanently, path);
+        url.pathname = url.pathname.slice(0, -1);
+        reply.redirect(StatusCode.MovedPermanently, url.href);
     } else done();
 }
 
